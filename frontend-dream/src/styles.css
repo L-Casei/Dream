@@ -1,2 +1,75 @@
 /* You can add global styles to this file, and also import other style files */
+/* Variables para tema oscuro */
+:root[data-theme="dark"] {
+  --bg-main: #0a0a0a;
+  --bg-secondary: #050505;
+  --text-primary: #ffffff;
+  --accent: #00f0ff;
+}
+
+/* Variables para tema claro */
+:root[data-theme="light"] {
+  --bg-main: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --accent: #0066cc;
+}
+
+/* TEMA OSCURO - Aplica a todos los elementos */
+body.dark-theme {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+body.dark-theme header {
+  background-color: #1a1a1a !important;
+  border-color: #00f0ff !important;
+}
+
+body.dark-theme main {
+  background-color: #0a0a0a !important;
+}
+
+body.dark-theme footer {
+  background-color: #1a1a1a !important;
+  border-color: #00f0ff !important;
+}
+
+body.dark-theme aside {
+  background-color: #050505 !important;
+}
+
+body.dark-theme .bg-light {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .bg-white {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .bg-primary {
+  background-color: #00f0ff !important;
+  color: #000 !important;
+}
+
+/* TEMA CLARO */
+body.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-theme header {
+  background-color: #f0f0f0 !important;
+}
+
+body.light-theme main {
+  background-color: #ffffff !important;
+}
+
+body.light-theme footer {
+  background-color: #ffffff !important;
+}
+
 @import 'bootstrap/dist/css/bootstrap.css';

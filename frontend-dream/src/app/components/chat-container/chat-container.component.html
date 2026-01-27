@@ -1,21 +1,37 @@
-<div class="container-fluid d-flex flex-column" style="height: 100vh;">
-  
-  <!-- HEADER -->
-  <header class="bg-primary text-white p-3 border-bottom">
-    <div class="d-flex justify-content-between align-items-center">
-      <h4 class="mb-0">Chat Bot - Dream</h4>
-      <button class="btn btn-outline-light btn-sm">Nuevo Chat</button>
+<div class="d-flex" style="height: 100vh;">
+
+    <!-- SIDEBAR (izquierda) -->
+    <aside class="bg-dark text-white" style="width: 280px; flex-shrink: 0;">
+        <app-sidebar></app-sidebar>
+    </aside>
+
+    <!-- CHAT PRINCIPAL (derecha) -->
+    <div class="flex-grow-1 d-flex flex-column">
+
+        <!-- HEADER -->
+        <header class="p-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Chat Bot - Dream</h4>
+                <div class="d-flex">
+                    <!-- ... -->
+                    <button class="btn btn-outline-light btn-sm" (click)="toggleTheme()">
+                        {{ (isDarkMode$ | async) ? '🌙' : '☀️' }}
+                    </button>
+                    <!-- ... -->
+                </div>
+            </div>
+        </header>
+
+        <!-- MESSAGE LIST -->
+        <main class="flex-grow-1 overflow-auto p-4">
+            <app-message-list></app-message-list>
+        </main>
+
+        <!-- CHAT INPUT -->
+        <footer class="border-top p-4 align-items-center ">
+            <app-chat-input></app-chat-input>
+        </footer>
+
     </div>
-  </header>
-
-  <!-- MENSAJE LIST (aquí van los mensajes) -->
-  <main class="flex-grow-1 overflow-auto p-4 bg-light">
-    <app-message-list></app-message-list>
-  </main>
-
-  <!-- CHAT INPUT (aquí escribes) -->
-  <footer class="border-top p-3 bg-white">
-    <app-chat-input></app-chat-input>
-  </footer>
 
 </div>
