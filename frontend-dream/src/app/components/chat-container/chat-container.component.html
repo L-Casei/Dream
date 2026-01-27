@@ -1,0 +1,21 @@
+<div class="container-fluid d-flex flex-column" style="height: 100vh;">
+  
+  <!-- HEADER -->
+  <header class="bg-primary text-white p-3 border-bottom">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Chat Bot - Dream</h4>
+      <button class="btn btn-outline-light btn-sm">Nuevo Chat</button>
+    </div>
+  </header>
+
+  <!-- MENSAJE LIST (aquí van los mensajes) -->
+  <main class="flex-grow-1 overflow-auto p-4 bg-light">
+    <app-message-list></app-message-list>
+  </main>
+
+  <!-- CHAT INPUT (aquí escribes) -->
+  <footer class="border-top p-3 bg-white">
+    <app-chat-input></app-chat-input>
+  </footer>
+
+</div>
