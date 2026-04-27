@@ -1,7 +1,7 @@
-<div class="d-flex" style="height: 100vh;">
+<div class="chat-shell d-flex">
 
     <!-- SIDEBAR (izquierda) -->
-    <aside class="app-sidebar-shell" style="width: 280px; flex-shrink: 0;">
+    <aside class="app-sidebar-shell">
         <app-sidebar></app-sidebar>
     </aside>
 
@@ -11,7 +11,7 @@
         <!-- HEADER -->
         <header class="p-3 border-bottom">
             <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Chat Bot - Dream</h4>
+                <h4 class="mb-0">Dream AI</h4>
                 <div class="d-flex">
                     <!-- ... -->
                     <button class="btn btn-outline-light btn-sm" (click)="toggleTheme()">
@@ -23,9 +23,9 @@
         </header>
 
         <!-- MESSAGE LIST -->
-        <main class="flex-grow-1 overflow-auto p-4" 
-              [style.backgroundImage]="(isDarkMode$ | async) ? 'url(assets/images/whitehole.jpg)' : 'url(assets/images/whitetree.jpg)'"
-              style="background-position: center; background-size: cover; background-repeat: no-repeat; max-width: 100%; max-height: 100%;">
+        <main class="chat-main flex-grow-1 overflow-auto p-4" 
+              [style.backgroundImage]="(isDarkMode$ | async) ? 'url(assets/images/blackhole.png)' : 'url(assets/images/whitehole.png)'"
+        >
               
             <app-message-list></app-message-list>
         </main>

@@ -5,17 +5,12 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ThemeService {
-  private isDarkMode = new BehaviorSubject<boolean>(true);
+  private isDarkMode = new BehaviorSubject<boolean>(this.getInitialIsDarkMode());
   private transitionTimeout?: ReturnType<typeof setTimeout>;
   isDarkMode$ = this.isDarkMode.asObservable();
 
   constructor() {
-    if (typeof localStorage !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved) {
-        this.setTheme(saved === 'dark');
-      }
-    }
+    this.setTheme(this.isDarkMode.getValue());
   }
 
   setTheme(isDark: boolean): void {
@@ -24,6 +19,11 @@ export class ThemeService {
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 
     // Aplicar clase al body
     if (isDark) {
@@ -54,5 +54,13 @@ export class ThemeService {
     this.transitionTimeout = setTimeout(() => {
       document.body.classList.remove('theme-switching');
     }, 900);
+  }
+
+  private getInitialIsDarkMode(): boolean {
+    if (typeof localStorage === 'undefined') {
+      return false;
+    }
+
+    return localStorage.getItem('theme') === 'dark';
   }
 }

@@ -1,0 +1,38 @@
+.message-row {
+  width: 100%;
+}
+
+.message-bubble {
+  max-width: 70%;
+  border-radius: 18px !important;
+  box-shadow: 0 12px 30px var(--soft-shadow, rgba(23, 20, 47, 0.12));
+  animation: tracking-in-expand 0.65s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+}
+
+.message-bubble.bg-primary {
+  background:
+    linear-gradient(135deg, var(--send-button-bg, #6d28d9), var(--message-user-end, #8b5cf6)) !important;
+  color: #ffffff !important;
+}
+
+.message-bubble.bg-secondary {
+  background:
+    linear-gradient(135deg, var(--message-bot-start, rgba(255, 255, 255, 0.96)), var(--message-bot-end, #eee7ff)) !important;
+  border: 1px solid var(--message-bot-border, #ded3f7);
+  color: var(--text-primary, #17142f) !important;
+}
+
+.message-bubble small {
+  color: var(--text-secondary, #6b6384);
+  font-weight: 500;
+}
+
+.message-bubble.bg-primary small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-bubble {
+    animation: none;
+  }
+}

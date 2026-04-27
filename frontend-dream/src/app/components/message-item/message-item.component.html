@@ -1,1 +1,17 @@
-<p>message-item works!</p>
+<div
+  class="message-row d-flex"
+  [class.justify-content-end]="message.role === 'user'"
+  [class.justify-content-start]="message.role === 'bot'"
+>
+  <div
+    class="message-bubble p-3 rounded text-white"
+    [class.bg-primary]="message.role === 'user'"
+    [class.bg-secondary]="message.role === 'bot'"
+  >
+    <p class="mb-0">{{ message.content }}</p>
+
+    @if (message.role === 'bot') {
+      <small>{{ message.agentName }} - {{ message.agentId }}</small>
+    }
+  </div>
+</div>

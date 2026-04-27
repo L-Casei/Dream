@@ -5,6 +5,7 @@ import { CommonModule, SlicePipe } from '@angular/common';
   selector: 'app-sidebar',
   imports: [CommonModule, SlicePipe],
   templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
 

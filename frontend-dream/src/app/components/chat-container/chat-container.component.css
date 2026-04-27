@@ -1,0 +1,81 @@
+.chat-shell {
+  height: 100vh;
+}
+
+.app-sidebar-shell {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+header {
+  background-color: var(--app-header-bg) !important;
+  color: var(--text-primary);
+  border-color: var(--app-border-color) !important;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 1px 0 var(--app-border-color);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.chat-main {
+  max-width: 100%;
+  max-height: 100%;
+  background-color: var(--bg-main) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    filter 0.35s ease;
+}
+
+footer {
+  background-color: var(--app-footer-bg) !important;
+  border-color: var(--app-border-color) !important;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 -12px 34px rgba(0, 0, 0, 0.06);
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+:host-context(body.light-theme) .app-sidebar-shell {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, var(--sidebar-bg) 100%),
+    radial-gradient(circle at top left, rgba(167, 139, 250, 0.18), transparent 34%) !important;
+  border-right: 1px solid var(--sidebar-border);
+  box-shadow: 8px 0 28px rgba(91, 33, 182, 0.08);
+}
+
+:host-context(body.dark-theme) .app-sidebar-shell {
+  background:
+    linear-gradient(180deg, rgba(10, 20, 36, 0.98), rgba(7, 14, 26, 0.98)),
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(127, 29, 58, 0.16), transparent 42%) !important;
+  border-right: 1px solid var(--sidebar-border);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.24);
+}
+
+:host-context(body.dark-theme) footer {
+  box-shadow: 0 -14px 38px rgba(0, 0, 0, 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar-shell,
+  header,
+  .chat-main,
+  footer {
+    transition: none;
+  }
+}

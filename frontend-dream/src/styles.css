@@ -1,48 +1,101 @@
 @import 'bootstrap/dist/css/bootstrap.css';
 
-/* You can add global styles to this file, and also import other style files */
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Cause", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
 /* Variables para tema oscuro */
 :root[data-theme="dark"],
 body.dark-theme {
-  --bg-main: #0a0a0a;
-  --bg-secondary: #050505;
-  --text-primary: #ffffff;
-  --accent: #00f0ff;
-  --sidebar-bg: #050505;
-  --sidebar-text: #ffffff;
-  --sidebar-muted: #adb5bd;
-  --sidebar-border: rgba(0, 240, 255, 0.35);
-  --sidebar-button-bg: transparent;
-  --sidebar-button-border: rgba(255, 255, 255, 0.5);
-  --sidebar-button-hover-bg: rgba(0, 240, 255, 0.14);
-  --sidebar-button-hover-border: #00f0ff;
+  --bg-main: #08111f;
+  --bg-secondary: #0d1b2f;
+  --text-primary: #f5f8ff;
+  --text-secondary: #98a8bd;
+  --accent: #38bdf8;
+  --accent-strong: #7dd3fc;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --accent-glow: rgba(56, 189, 248, 0.22);
+  --midnight-red: #7f1d3a;
+  --metal-line: rgba(148, 163, 184, 0.24);
+  --sidebar-bg: #0a1424;
+  --sidebar-text: #f5f8ff;
+  --sidebar-muted: #9aaac0;
+  --sidebar-border: rgba(125, 211, 252, 0.2);
+  --sidebar-button-bg: rgba(15, 29, 50, 0.78);
+  --sidebar-button-border: rgba(148, 163, 184, 0.22);
+  --sidebar-button-hover-bg: rgba(20, 43, 72, 0.94);
+  --sidebar-button-hover-border: #38bdf8;
+  --sidebar-button-hover-start: rgba(17, 34, 58, 0.98);
+  --sidebar-shadow: rgba(0, 0, 0, 0.32);
+  --avatar-bg-start: #13243d;
+  --avatar-bg-end: #2a1831;
+  --avatar-ring: rgba(56, 189, 248, 0.22);
+  --app-header-bg: rgba(9, 18, 32, 0.88);
+  --app-footer-bg: rgba(8, 17, 31, 0.92);
+  --app-border-color: rgba(125, 211, 252, 0.18);
+  --control-bg: rgba(12, 24, 42, 0.92);
+  --control-border: rgba(148, 163, 184, 0.28);
+  --control-text: #f5f8ff;
+  --send-button-bg: #0ea5e9;
+  --send-button-hover-bg: #0369a1;
+  --send-button-end: #7f1d3a;
+  --focus-ring: rgba(56, 189, 248, 0.18);
+  --soft-shadow: rgba(0, 0, 0, 0.32);
+  --message-user-end: #0f766e;
+  --message-bot-start: rgba(15, 29, 50, 0.96);
+  --message-bot-end: rgba(35, 22, 45, 0.94);
+  --message-bot-border: rgba(125, 211, 252, 0.18);
 }
 
 /* Variables para tema claro */
 :root[data-theme="light"],
 body.light-theme {
-  --bg-main: #ffffff;
-  --bg-secondary: #f6f8fc;
-  --text-primary: #172033;
-  --accent: #4f46e5;
-  --sidebar-bg: #f8fbff;
-  --sidebar-text: #172033;
-  --sidebar-muted: #667085;
-  --sidebar-border: #d9e3f2;
-  --sidebar-button-bg: #ffffff;
-  --sidebar-button-border: #dbe5f4;
-  --sidebar-button-hover-bg: #eef4ff;
-  --sidebar-button-hover-border: #7c3aed;
+  --bg-main: #fbfaff;
+  --bg-secondary: #f4f0ff;
+  --text-primary: #17142f;
+  --text-secondary: #6b6384;
+  --accent: #7c3aed;
+  --accent-strong: #5b21b6;
+  --accent-soft: #eee7ff;
+  --accent-glow: rgba(124, 58, 237, 0.22);
+  --sidebar-bg: #fbfaff;
+  --sidebar-text: #17142f;
+  --sidebar-muted: #746b8d;
+  --sidebar-border: #ded3f7;
+  --sidebar-button-bg: rgba(255, 255, 255, 0.86);
+  --sidebar-button-border: #d8ccf3;
+  --sidebar-button-hover-bg: #f1eaff;
+  --sidebar-button-hover-border: #8b5cf6;
+  --sidebar-button-hover-start: #ffffff;
+  --sidebar-shadow: rgba(91, 33, 182, 0.14);
+  --avatar-bg-start: #f3efff;
+  --avatar-bg-end: #e7ddff;
+  --avatar-ring: rgba(124, 58, 237, 0.08);
+  --app-header-bg: rgba(255, 255, 255, 0.88);
+  --app-footer-bg: rgba(255, 255, 255, 0.92);
+  --app-border-color: #ded3f7;
+  --control-bg: #ffffff;
+  --control-border: #d8ccf3;
+  --control-text: #211a3f;
+  --send-button-bg: #6d28d9;
+  --send-button-hover-bg: #5b21b6;
+  --send-button-end: #8b5cf6;
+  --focus-ring: rgba(124, 58, 237, 0.14);
+  --soft-shadow: rgba(91, 33, 182, 0.1);
+  --message-user-end: #8b5cf6;
+  --message-bot-start: rgba(255, 255, 255, 0.96);
+  --message-bot-end: #eee7ff;
+  --message-bot-border: #ded3f7;
 }
 
 body,
-header,
-main,
-footer,
-aside,
-.app-sidebar-shell,
-.sidebar-avatar,
-.sidebar-chat-button,
 .btn {
   transition:
     background-color 0.35s ease,
@@ -103,26 +156,11 @@ body.theme-switching main {
 
 /* TEMA OSCURO - Aplica a todos los elementos */
 body.dark-theme {
-  background-color: #0a0a0a;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.12), transparent 30%),
+    radial-gradient(circle at 100% 20%, rgba(127, 29, 58, 0.16), transparent 34%),
+    var(--bg-main);
   color: #ffffff;
-}
-
-body.dark-theme header {
-  background-color: #1a1a1a !important;
-  border-color: #00f0ff !important;
-}
-
-body.dark-theme main {
-  background-color: #0a0a0a !important;
-}
-
-body.dark-theme footer {
-  background-color: #1a1a1a !important;
-  border-color: #00f0ff !important;
-}
-
-body.dark-theme aside {
-  background-color: #050505 !important;
 }
 
 body.dark-theme .bg-light {
@@ -136,75 +174,28 @@ body.dark-theme .bg-white {
 }
 
 body.dark-theme .bg-primary {
-  background-color: #00f0ff !important;
-  color: #000 !important;
+  background-color: var(--send-button-bg) !important;
+  color: #ffffff !important;
 }
 
 body.dark-theme .btn-outline-light {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: var(--control-border);
   color: #ffffff;
+}
+
+body.dark-theme .btn-outline-light:hover,
+body.dark-theme .btn-outline-light:focus-visible {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-strong);
 }
 
 /* TEMA CLARO */
 body.light-theme {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-body.light-theme header {
-  background-color: #f0f0f0 !important;
-  color: #172033;
-  border-color: #d9e3f2 !important;
-}
-
-body.light-theme main {
-  background-color: #ffffff !important;
-}
-
-body.light-theme footer {
-  background-color: #ffffff !important;
-}
-
-body.light-theme aside,
-body.light-theme .app-sidebar-shell {
-  background: linear-gradient(180deg, #ffffff 0%, var(--sidebar-bg) 100%) !important;
-  color: var(--sidebar-text) !important;
-  border-right: 1px solid var(--sidebar-border);
-  box-shadow: 6px 0 24px rgba(15, 23, 42, 0.06);
-}
-
-.app-sidebar-shell {
-  background-color: var(--sidebar-bg);
-  color: var(--sidebar-text);
-}
-
-.app-sidebar-shell .border-bottom,
-.app-sidebar-shell .border-top {
-  border-color: var(--sidebar-border) !important;
-}
-
-.app-sidebar-shell .text-muted {
-  color: var(--sidebar-muted) !important;
-}
-
-.sidebar-avatar {
-  display: grid;
-  place-items: center;
-  background: color-mix(in srgb, var(--accent) 12%, #ffffff) !important;
-  color: var(--accent) !important;
-}
-
-.sidebar-chat-button {
-  background-color: var(--sidebar-button-bg);
-  border: 1px solid var(--sidebar-button-border);
-  color: var(--sidebar-text);
-}
-
-.sidebar-chat-button:hover,
-.sidebar-chat-button:focus-visible {
-  background-color: var(--sidebar-button-hover-bg);
-  border-color: var(--sidebar-button-hover-border);
-  color: var(--accent);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(167, 139, 250, 0.12), transparent 28%),
+    var(--bg-main);
+  color: var(--text-primary);
 }
 
 body.light-theme .btn-outline-light {
@@ -214,9 +205,9 @@ body.light-theme .btn-outline-light {
 
 body.light-theme .btn-outline-light:hover,
 body.light-theme .btn-outline-light:focus-visible {
-  background-color: #eef4ff;
-  border-color: #4f46e5;
-  color: #4f46e5;
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-strong);
 }
 
 @keyframes theme-ripple {
@@ -265,15 +256,38 @@ body.light-theme .btn-outline-light:focus-visible {
   }
 }
 
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.18em;
+    filter: blur(8px);
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  100% {
+    letter-spacing: 0;
+    filter: blur(0);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes thinking-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0) scale(0.82);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body,
-  header,
-  main,
-  footer,
-  aside,
-  .app-sidebar-shell,
-  .sidebar-avatar,
-  .sidebar-chat-button,
   .btn {
     transition: none;
   }

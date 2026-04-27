@@ -1,25 +1,26 @@
-<div class="d-flex gap-2 align-items-center">
+<div class="chat-input-bar d-flex gap-2 align-items-center">
   
   <!-- Botón Emojis -->
-  <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px;">
+  <button class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
     😊
   </button>
 
   <!-- Input Mensaje -->
   <input 
-    type="text" 
+    type="text"
+    [(ngModel)]="userMessage"
     class="form-control rounded-pill" 
     placeholder="Escribe un mensaje..."
-    style="flex: 1; border-radius: 20px;"
+    (keyup.enter)="sendMessage()"
   />
 
   <!-- Botón Adjuntar Archivo -->
-  <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px;">
+  <button class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
     📎
   </button>
 
   <!-- Botón Enviar -->
-  <button class="btn btn-primary rounded-circle p-2" style="width: 40px; height: 40px;">
+  <button class="chat-input-icon btn btn-primary rounded-circle p-2" (click)="sendMessage()">
     ➤
   </button>
 

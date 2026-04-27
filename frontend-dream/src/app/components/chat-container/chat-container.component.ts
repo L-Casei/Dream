@@ -9,6 +9,7 @@ import { ThemeService } from '../../services/theme.service';
   selector: 'app-chat-container',
   imports: [MessageListComponent, ChatInputComponent, SidebarComponent, CommonModule, AsyncPipe],
   templateUrl: './chat-container.component.html',
+  styleUrl: './chat-container.component.css',
 })
 export class ChatContainerComponent {
   themeService = inject(ThemeService);

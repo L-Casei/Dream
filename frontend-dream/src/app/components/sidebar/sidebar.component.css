@@ -1,0 +1,71 @@
+.sidebar-profile,
+.sidebar-footer {
+  border-color: var(--sidebar-border) !important;
+}
+
+.text-muted {
+  color: var(--sidebar-muted) !important;
+}
+
+.sidebar-avatar {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  background:
+    linear-gradient(145deg, var(--avatar-bg-start) 0%, var(--avatar-bg-end) 100%) !important;
+  color: var(--accent-strong, var(--accent)) !important;
+  box-shadow: inset 0 0 0 1px var(--avatar-ring);
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease;
+}
+
+.sidebar-chat-button {
+  background-color: var(--sidebar-button-bg);
+  border: 1px solid var(--sidebar-button-border);
+  color: var(--sidebar-text);
+  border-radius: 8px;
+  font-weight: 500;
+  line-height: 1.25;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.04);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-chat-button svg {
+  margin-right: 0.35rem;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+.sidebar-chat-button:hover,
+.sidebar-chat-button:focus-visible {
+  background:
+    linear-gradient(135deg, var(--sidebar-button-hover-start) 0%, var(--sidebar-button-hover-bg) 100%);
+  border-color: var(--sidebar-button-hover-border);
+  color: var(--accent-strong, var(--accent));
+  box-shadow:
+    0 10px 24px var(--sidebar-shadow),
+    0 0 0 3px var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.sidebar-chat-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sidebar-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-avatar,
+  .sidebar-chat-button {
+    transition: none;
+  }
+}
