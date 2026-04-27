@@ -1,8 +1,20 @@
 <div class="chat-shell d-flex">
 
     <!-- Aside (izquierda) -->
-    <aside class="app-aside-shell">
-        <app-aside></app-aside>
+    <aside class="app-aside-shell" [class.aside-collapsed]="isAsideCollapsed">
+        <button
+            type="button"
+            class="aside-toggle"
+            [class.aside-toggle-collapsed]="isAsideCollapsed"
+            (click)="toggleAside()"
+            [attr.aria-label]="isAsideCollapsed ? 'Mostrar panel lateral' : 'Ocultar panel lateral'"
+        >
+            <span class="aside-toggle-icon">&lsaquo;</span>
+        </button>
+
+        <div class="aside-content">
+            <app-aside></app-aside>
+        </div>
     </aside>
 
     <!-- CHAT PRINCIPAL (derecha) -->

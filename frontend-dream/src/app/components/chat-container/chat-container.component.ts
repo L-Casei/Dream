@@ -14,8 +14,13 @@ import { ThemeService } from '../../services/theme.service';
 export class ChatContainerComponent {
   themeService = inject(ThemeService);
   isDarkMode$ = this.themeService.isDarkMode$;
+  isAsideCollapsed = false;
   
   public toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  public toggleAside(): void {
+    this.isAsideCollapsed = !this.isAsideCollapsed;
   }
 }

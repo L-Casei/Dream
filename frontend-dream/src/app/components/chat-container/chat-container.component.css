@@ -3,16 +3,86 @@
 }
 
 .app-aside-shell {
+  position: relative;
   width: 280px;
   flex-shrink: 0;
+  overflow: hidden;
   background-color: var(--aside-bg);
   color: var(--aside-text);
   transition:
+    width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.35s ease,
     background 0.35s ease,
     color 0.35s ease,
     border-color 0.35s ease,
     box-shadow 0.35s ease;
+}
+
+.app-aside-shell.aside-collapsed {
+  width: 56px;
+}
+
+.aside-content {
+  height: 100%;
+  padding-top: 0;
+  overflow: hidden;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aside-collapsed .aside-content {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-22px);
+}
+
+.aside-toggle {
+  position: absolute;
+  top: 16px;
+  right: 8px;
+  z-index: 4;
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--aside-border);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, var(--control-bg), var(--bg-secondary));
+  color: var(--accent-strong, var(--accent));
+  box-shadow:
+    0 10px 24px var(--soft-shadow),
+    0 0 0 3px var(--accent-soft);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aside-toggle:hover,
+.aside-toggle:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.aside-toggle-icon {
+  display: block;
+  font-size: 1.55rem;
+  height: 3.5vh;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aside-toggle-collapsed .aside-toggle-icon {
+  transform: rotate(180deg);
 }
 
 header {
@@ -96,6 +166,9 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   .app-aside-shell,
+  .aside-content,
+  .aside-toggle,
+  .aside-toggle-icon,
   header,
   .chat-main,
   footer {
