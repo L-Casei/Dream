@@ -1,43 +1,43 @@
-<div class="d-flex flex-column h-100">
+<div class="aside-panel d-flex flex-column h-100" [class.aside-panel-collapsed]="collapsed">
 
   <!-- PERFIL (arriba) -->
   <div class="aside-profile p-3 border-bottom">
     <div class="d-flex align-items-center">
       <div class="aside-avatar bg-light rounded-circle p-2">
-        👤
+        &#128100;
       </div>
-      <div class="ms-2">
-        <p class="mb-0"><strong>Tu Nombre</strong></p>
+      <div class="aside-profile-text ms-2">
+        <p class="mb-0"><strong>Guti</strong></p>
         <small class="text-muted">Premium</small>
       </div>
     </div>
   </div>
 
   <!-- CONVERSACIONES (scroll) -->
-  <div class="flex-grow-1 overflow-auto p-2">
-    <button class="btn aside-chat-button w-100 text-start mb-2">
+  <div class="aside-conversations flex-grow-1 overflow-auto p-2">
+    <button class="btn aside-chat-button w-100 text-start mb-2" title="Angular Coding Doubts">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
         viewBox="0 0 16 16">
         <path
           d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
       </svg>
-      {{ "Angular Coding Doubts" | slice:0:25 }}
+      <span class="aside-chat-label">{{ "Angular Coding Doubts" | slice:0:25 }}</span>
     </button>
-    <button class="btn aside-chat-button w-100 text-start mb-2">
+    <button class="btn aside-chat-button w-100 text-start mb-2" title="How to Create new House in Minecraft">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
         viewBox="0 0 16 16">
         <path
           d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
       </svg>
-      {{ "How to Create new House in Minecraft" | slice:0:25 }}
+      <span class="aside-chat-label">{{ "How to Create new House in Minecraft" | slice:0:25 }}</span>
     </button>
-    <button class="btn aside-chat-button w-100 text-start mb-2">
+    <button class="btn aside-chat-button w-100 text-start mb-2" title="Gargantua is a real Black Hole?">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
         viewBox="0 0 16 16">
         <path
           d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
       </svg>
-      {{ "Gargantua is a real Black Hole?" | slice:0:25 }}
+      <span class="aside-chat-label">{{ "Gargantua is a real Black Hole?" | slice:0:25 }}</span>
     </button>
   </div>
 </div>

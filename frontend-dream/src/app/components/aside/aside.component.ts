@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule, SlicePipe } from '@angular/common';
 
 @Component({
@@ -8,5 +8,5 @@ import { CommonModule, SlicePipe } from '@angular/common';
   styleUrl: './aside.component.css',
 })
 export class AsideComponent {
-
+  @Input() collapsed = false;
 }

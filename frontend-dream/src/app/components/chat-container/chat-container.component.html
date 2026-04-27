@@ -1,5 +1,6 @@
-<div class="chat-shell d-flex">
+@let isDarkMode = (isDarkMode$ | async) === true;
 
+<div class="chat-shell d-flex">
     <!-- Aside (izquierda) -->
     <aside class="app-aside-shell" [class.aside-collapsed]="isAsideCollapsed">
         <button
@@ -13,7 +14,7 @@
         </button>
 
         <div class="aside-content">
-            <app-aside></app-aside>
+            <app-aside [collapsed]="isAsideCollapsed"></app-aside>
         </div>
     </aside>
 
@@ -25,18 +26,24 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Dream AI</h4>
                 <div class="d-flex">
-                    <!-- ... -->
-                    <button class="btn btn-outline-light btn-sm" (click)="toggleTheme()">
-                        {{ (isDarkMode$ | async) ? '🌙' : '☀️' }}
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        [class.theme-toggle-dark]="isDarkMode"
+                        (click)="toggleTheme()"
+                        [attr.aria-label]="isDarkMode ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'"
+                    >
+                        <span class="theme-toggle-icon theme-toggle-sun">&#9728;</span>
+                        <span class="theme-toggle-icon theme-toggle-moon">&#9790;</span>
+                        <span class="theme-toggle-thumb"></span>
                     </button>
-                    <!-- ... -->
                 </div>
             </div>
         </header>
 
         <!-- MESSAGE LIST -->
         <main class="chat-main flex-grow-1 overflow-auto p-4" 
-              [style.backgroundImage]="(isDarkMode$ | async) ? 'url(assets/images/blackhole.png)' : 'url(assets/images/whitehole.png)'"
+              [style.backgroundImage]="isDarkMode ? 'url(assets/images/blackhole.png)' : 'url(assets/images/whitehole.png)'"
         >
               
             <app-message-list></app-message-list>
