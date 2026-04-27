@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ThemeService {
   private isDarkMode = new BehaviorSubject<boolean>(true);
+  private transitionTimeout?: ReturnType<typeof setTimeout>;
   isDarkMode$ = this.isDarkMode.asObservable();
 
   constructor() {
@@ -36,6 +37,22 @@ export class ThemeService {
 
   public toggleTheme(): void {
     const current = this.isDarkMode.getValue();
+    this.playThemeTransition();
     this.setTheme(!current);
+  }
+
+  private playThemeTransition(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.body.classList.remove('theme-switching');
+    void document.body.offsetWidth;
+    document.body.classList.add('theme-switching');
+
+    clearTimeout(this.transitionTimeout);
+    this.transitionTimeout = setTimeout(() => {
+      document.body.classList.remove('theme-switching');
+    }, 900);
   }
 }

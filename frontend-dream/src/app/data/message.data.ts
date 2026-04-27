@@ -1,4 +1,4 @@
-import { Message } from '../models/message';
+import { Message } from '../models/chatMessage';
 
 //Es un ejemplo de mensaje de bot, en un futuro vendran de una API
 

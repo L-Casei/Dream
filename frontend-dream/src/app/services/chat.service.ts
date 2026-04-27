@@ -1,13 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Message } from '../models/message';
+import { chatMessage } from '../models/chatMessage';
 import { messageData } from '../data/message.data';
+import { HttpClient } from '@angular/common/http';
+
+export interface ChatRequest {
+  message: string;
+}
+
+export interface ChatResponse {
+  answer: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private messages: Message[] = [messageData];
+  //Direccion de la API
+  private readonly apiUrl = 'http://localhost:8080/api/chat';
 
-  constructor() { }
+  
+  private messages: chatMessage[] = [messageData];
+
+   constructor(private http: HttpClient) {}
 }

@@ -1,18 +1,104 @@
+@import 'bootstrap/dist/css/bootstrap.css';
+
 /* You can add global styles to this file, and also import other style files */
 /* Variables para tema oscuro */
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+body.dark-theme {
   --bg-main: #0a0a0a;
   --bg-secondary: #050505;
   --text-primary: #ffffff;
   --accent: #00f0ff;
+  --sidebar-bg: #050505;
+  --sidebar-text: #ffffff;
+  --sidebar-muted: #adb5bd;
+  --sidebar-border: rgba(0, 240, 255, 0.35);
+  --sidebar-button-bg: transparent;
+  --sidebar-button-border: rgba(255, 255, 255, 0.5);
+  --sidebar-button-hover-bg: rgba(0, 240, 255, 0.14);
+  --sidebar-button-hover-border: #00f0ff;
 }
 
 /* Variables para tema claro */
-:root[data-theme="light"] {
+:root[data-theme="light"],
+body.light-theme {
   --bg-main: #ffffff;
-  --bg-secondary: #f5f5f5;
-  --text-primary: #000000;
-  --accent: #0066cc;
+  --bg-secondary: #f6f8fc;
+  --text-primary: #172033;
+  --accent: #4f46e5;
+  --sidebar-bg: #f8fbff;
+  --sidebar-text: #172033;
+  --sidebar-muted: #667085;
+  --sidebar-border: #d9e3f2;
+  --sidebar-button-bg: #ffffff;
+  --sidebar-button-border: #dbe5f4;
+  --sidebar-button-hover-bg: #eef4ff;
+  --sidebar-button-hover-border: #7c3aed;
+}
+
+body,
+header,
+main,
+footer,
+aside,
+.app-sidebar-shell,
+.sidebar-avatar,
+.sidebar-chat-button,
+.btn {
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+body.theme-switching {
+  overflow: hidden;
+}
+
+body.theme-switching::before,
+body.theme-switching::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body.theme-switching::before {
+  width: 36vmax;
+  height: 36vmax;
+  top: 68px;
+  right: 24px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--accent) 32%, white) 0 14%, transparent 15% 100%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0 0, transparent 68%);
+  filter: blur(1px);
+  animation: theme-ripple 0.9s ease-out forwards;
+}
+
+body.theme-switching::after {
+  width: 6px;
+  height: 6px;
+  top: 82px;
+  right: 44px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow:
+    -18px 26px 0 #7c3aed,
+    22px 18px 0 #00f0ff,
+    48px 42px 0 #ffffff,
+    -42px 52px 0 #4f46e5,
+    8px 72px 0 #b7f7ff,
+    -66px 12px 0 #ffffff,
+    72px 6px 0 #7c3aed,
+    -8px -18px 0 #00f0ff;
+  animation: theme-sparkles 0.85s ease-out forwards;
+}
+
+body.theme-switching main {
+  animation: theme-image-pulse 0.75s ease both;
 }
 
 /* TEMA OSCURO - Aplica a todos los elementos */
@@ -54,6 +140,11 @@ body.dark-theme .bg-primary {
   color: #000 !important;
 }
 
+body.dark-theme .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
 /* TEMA CLARO */
 body.light-theme {
   background-color: #ffffff;
@@ -62,6 +153,8 @@ body.light-theme {
 
 body.light-theme header {
   background-color: #f0f0f0 !important;
+  color: #172033;
+  border-color: #d9e3f2 !important;
 }
 
 body.light-theme main {
@@ -72,4 +165,122 @@ body.light-theme footer {
   background-color: #ffffff !important;
 }
 
-@import 'bootstrap/dist/css/bootstrap.css';
+body.light-theme aside,
+body.light-theme .app-sidebar-shell {
+  background: linear-gradient(180deg, #ffffff 0%, var(--sidebar-bg) 100%) !important;
+  color: var(--sidebar-text) !important;
+  border-right: 1px solid var(--sidebar-border);
+  box-shadow: 6px 0 24px rgba(15, 23, 42, 0.06);
+}
+
+.app-sidebar-shell {
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+}
+
+.app-sidebar-shell .border-bottom,
+.app-sidebar-shell .border-top {
+  border-color: var(--sidebar-border) !important;
+}
+
+.app-sidebar-shell .text-muted {
+  color: var(--sidebar-muted) !important;
+}
+
+.sidebar-avatar {
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 12%, #ffffff) !important;
+  color: var(--accent) !important;
+}
+
+.sidebar-chat-button {
+  background-color: var(--sidebar-button-bg);
+  border: 1px solid var(--sidebar-button-border);
+  color: var(--sidebar-text);
+}
+
+.sidebar-chat-button:hover,
+.sidebar-chat-button:focus-visible {
+  background-color: var(--sidebar-button-hover-bg);
+  border-color: var(--sidebar-button-hover-border);
+  color: var(--accent);
+}
+
+body.light-theme .btn-outline-light {
+  border-color: #b9c8dd;
+  color: #364153;
+}
+
+body.light-theme .btn-outline-light:hover,
+body.light-theme .btn-outline-light:focus-visible {
+  background-color: #eef4ff;
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+@keyframes theme-ripple {
+  0% {
+    opacity: 0;
+    transform: translate(20%, -20%) scale(0.04);
+  }
+
+  22% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(20%, -20%) scale(5.8);
+  }
+}
+
+@keyframes theme-sparkles {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-86px, 96px) scale(1.35) rotate(28deg);
+  }
+}
+
+@keyframes theme-image-pulse {
+  0% {
+    filter: saturate(1) brightness(1);
+  }
+
+  45% {
+    filter: saturate(1.25) brightness(1.12);
+  }
+
+  100% {
+    filter: saturate(1) brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  header,
+  main,
+  footer,
+  aside,
+  .app-sidebar-shell,
+  .sidebar-avatar,
+  .sidebar-chat-button,
+  .btn {
+    transition: none;
+  }
+
+  body.theme-switching::before,
+  body.theme-switching::after,
+  body.theme-switching main {
+    animation: none;
+  }
+}

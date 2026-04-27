@@ -1,9 +1,9 @@
 <div class="d-flex flex-column h-100">
 
   <!-- PERFIL (arriba) -->
-  <div class="p-3 border-bottom">
+  <div class="sidebar-profile p-3 border-bottom">
     <div class="d-flex align-items-center">
-      <div class="bg-light rounded-circle p-2" style="width: 40px; height: 40px;">
+      <div class="sidebar-avatar bg-light rounded-circle p-2" style="width: 40px; height: 40px;">
         👤
       </div>
       <div class="ms-2">
@@ -15,7 +15,7 @@
 
   <!-- CONVERSACIONES (scroll) -->
   <div class="flex-grow-1 overflow-auto p-2">
-    <button class="btn btn-outline-light w-100 text-start mb-2">
+    <button class="btn sidebar-chat-button w-100 text-start mb-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
         viewBox="0 0 16 16">
         <path
@@ -23,7 +23,7 @@
       </svg>
       {{ "Angular Coding Doubts" | slice:0:25 }}
     </button>
-    <button class="btn btn-outline-light w-100 text-start mb-2">
+    <button class="btn sidebar-chat-button w-100 text-start mb-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
         viewBox="0 0 16 16">
         <path
@@ -31,7 +31,7 @@
       </svg>
       {{ "How to Create new House in Minecraft" | slice:0:25 }}
     </button>
-    <button class="btn btn-outline-light w-100 text-start mb-2">
+    <button class="btn sidebar-chat-button w-100 text-start mb-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
         viewBox="0 0 16 16">
         <path
@@ -42,7 +42,7 @@
   </div>
 
   <!-- LOGOUT (abajo) -->
-  <div class="p-3 border-top">
+  <div class="sidebar-footer p-3 border-top">
     <button class="btn btn-danger w-100 btn-sm">Salir</button>
   </div>
 
