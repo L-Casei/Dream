@@ -24,16 +24,16 @@ body.dark-theme {
   --accent-glow: rgba(56, 189, 248, 0.22);
   --midnight-red: #7f1d3a;
   --metal-line: rgba(148, 163, 184, 0.24);
-  --sidebar-bg: #0a1424;
-  --sidebar-text: #f5f8ff;
-  --sidebar-muted: #9aaac0;
-  --sidebar-border: rgba(125, 211, 252, 0.2);
-  --sidebar-button-bg: rgba(15, 29, 50, 0.78);
-  --sidebar-button-border: rgba(148, 163, 184, 0.22);
-  --sidebar-button-hover-bg: rgba(20, 43, 72, 0.94);
-  --sidebar-button-hover-border: #38bdf8;
-  --sidebar-button-hover-start: rgba(17, 34, 58, 0.98);
-  --sidebar-shadow: rgba(0, 0, 0, 0.32);
+  --aside-bg: #0a1424;
+  --aside-text: #f5f8ff;
+  --aside-muted: #9aaac0;
+  --aside-border: rgba(125, 211, 252, 0.2);
+  --aside-button-bg: rgba(15, 29, 50, 0.78);
+  --aside-button-border: rgba(148, 163, 184, 0.22);
+  --aside-button-hover-bg: rgba(20, 43, 72, 0.94);
+  --aside-button-hover-border: #38bdf8;
+  --aside-button-hover-start: rgba(17, 34, 58, 0.98);
+  --aside-shadow: rgba(0, 0, 0, 0.32);
   --avatar-bg-start: #13243d;
   --avatar-bg-end: #2a1831;
   --avatar-ring: rgba(56, 189, 248, 0.22);
@@ -52,6 +52,11 @@ body.dark-theme {
   --message-bot-start: rgba(15, 29, 50, 0.96);
   --message-bot-end: rgba(35, 22, 45, 0.94);
   --message-bot-border: rgba(125, 211, 252, 0.18);
+  --scrollbar-track: rgba(8, 17, 31, 0.68);
+  --scrollbar-thumb: linear-gradient(180deg, #38bdf8 0%, #7f1d3a 100%);
+  --scrollbar-thumb-solid: #38bdf8;
+  --scrollbar-thumb-hover: #7dd3fc;
+  --scrollbar-border: rgba(8, 17, 31, 0.72);
 }
 
 /* Variables para tema claro */
@@ -65,16 +70,16 @@ body.light-theme {
   --accent-strong: #5b21b6;
   --accent-soft: #eee7ff;
   --accent-glow: rgba(124, 58, 237, 0.22);
-  --sidebar-bg: #fbfaff;
-  --sidebar-text: #17142f;
-  --sidebar-muted: #746b8d;
-  --sidebar-border: #ded3f7;
-  --sidebar-button-bg: rgba(255, 255, 255, 0.86);
-  --sidebar-button-border: #d8ccf3;
-  --sidebar-button-hover-bg: #f1eaff;
-  --sidebar-button-hover-border: #8b5cf6;
-  --sidebar-button-hover-start: #ffffff;
-  --sidebar-shadow: rgba(91, 33, 182, 0.14);
+  --aside-bg: #fbfaff;
+  --aside-text: #17142f;
+  --aside-muted: #746b8d;
+  --aside-border: #ded3f7;
+  --aside-button-bg: rgba(255, 255, 255, 0.86);
+  --aside-button-border: #d8ccf3;
+  --aside-button-hover-bg: #f1eaff;
+  --aside-button-hover-border: #8b5cf6;
+  --aside-button-hover-start: #ffffff;
+  --aside-shadow: rgba(91, 33, 182, 0.14);
   --avatar-bg-start: #f3efff;
   --avatar-bg-end: #e7ddff;
   --avatar-ring: rgba(124, 58, 237, 0.08);
@@ -93,6 +98,11 @@ body.light-theme {
   --message-bot-start: rgba(255, 255, 255, 0.96);
   --message-bot-end: #eee7ff;
   --message-bot-border: #ded3f7;
+  --scrollbar-track: rgba(244, 240, 255, 0.72);
+  --scrollbar-thumb: linear-gradient(180deg, #c4b5fd 0%, #7c3aed 100%);
+  --scrollbar-thumb-solid: #8b5cf6;
+  --scrollbar-thumb-hover: #6d28d9;
+  --scrollbar-border: rgba(255, 255, 255, 0.72);
 }
 
 body,

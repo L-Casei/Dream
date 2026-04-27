@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule, SlicePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'app-aside',
   imports: [CommonModule, SlicePipe],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css',
+  templateUrl: './aside.component.html',
+  styleUrl: './aside.component.css',
 })
-export class SidebarComponent {
+export class AsideComponent {
 
 }
