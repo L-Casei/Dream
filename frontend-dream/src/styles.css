@@ -1,1 +1,310 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.css';
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Cause", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Variables para tema oscuro */
+:root[data-theme="dark"],
+body.dark-theme {
+  --bg-main: #08111f;
+  --bg-secondary: #0d1b2f;
+  --text-primary: #f5f8ff;
+  --text-secondary: #98a8bd;
+  --accent: #38bdf8;
+  --accent-strong: #7dd3fc;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --accent-glow: rgba(56, 189, 248, 0.22);
+  --midnight-red: #7f1d3a;
+  --metal-line: rgba(148, 163, 184, 0.24);
+  --aside-bg: #0a1424;
+  --aside-text: #f5f8ff;
+  --aside-muted: #9aaac0;
+  --aside-border: rgba(125, 211, 252, 0.2);
+  --aside-button-bg: rgba(15, 29, 50, 0.78);
+  --aside-button-border: rgba(148, 163, 184, 0.22);
+  --aside-button-hover-bg: rgba(20, 43, 72, 0.94);
+  --aside-button-hover-border: #38bdf8;
+  --aside-button-hover-start: rgba(17, 34, 58, 0.98);
+  --aside-shadow: rgba(0, 0, 0, 0.32);
+  --avatar-bg-start: #13243d;
+  --avatar-bg-end: #2a1831;
+  --avatar-ring: rgba(56, 189, 248, 0.22);
+  --app-header-bg: rgba(9, 18, 32, 0.88);
+  --app-footer-bg: rgba(8, 17, 31, 0.92);
+  --app-border-color: rgba(125, 211, 252, 0.18);
+  --control-bg: rgba(12, 24, 42, 0.92);
+  --control-border: rgba(148, 163, 184, 0.28);
+  --control-text: #f5f8ff;
+  --send-button-bg: #0ea5e9;
+  --send-button-hover-bg: #0369a1;
+  --send-button-end: #7f1d3a;
+  --focus-ring: rgba(56, 189, 248, 0.18);
+  --soft-shadow: rgba(0, 0, 0, 0.32);
+  --message-user-end: #0f766e;
+  --message-bot-start: rgba(15, 29, 50, 0.96);
+  --message-bot-end: rgba(35, 22, 45, 0.94);
+  --message-bot-border: rgba(125, 211, 252, 0.18);
+  --scrollbar-track: rgba(8, 17, 31, 0.68);
+  --scrollbar-thumb: linear-gradient(180deg, #38bdf8 0%, #7f1d3a 100%);
+  --scrollbar-thumb-solid: #38bdf8;
+  --scrollbar-thumb-hover: #7dd3fc;
+  --scrollbar-border: rgba(8, 17, 31, 0.72);
+}
+
+/* Variables para tema claro */
+:root[data-theme="light"],
+body.light-theme {
+  --bg-main: #fbfaff;
+  --bg-secondary: #f4f0ff;
+  --text-primary: #17142f;
+  --text-secondary: #6b6384;
+  --accent: #7c3aed;
+  --accent-strong: #5b21b6;
+  --accent-soft: #eee7ff;
+  --accent-glow: rgba(124, 58, 237, 0.22);
+  --aside-bg: #fbfaff;
+  --aside-text: #17142f;
+  --aside-muted: #746b8d;
+  --aside-border: #ded3f7;
+  --aside-button-bg: rgba(255, 255, 255, 0.86);
+  --aside-button-border: #d8ccf3;
+  --aside-button-hover-bg: #f1eaff;
+  --aside-button-hover-border: #8b5cf6;
+  --aside-button-hover-start: #ffffff;
+  --aside-shadow: rgba(91, 33, 182, 0.14);
+  --avatar-bg-start: #f3efff;
+  --avatar-bg-end: #e7ddff;
+  --avatar-ring: rgba(124, 58, 237, 0.08);
+  --app-header-bg: rgba(255, 255, 255, 0.88);
+  --app-footer-bg: rgba(255, 255, 255, 0.92);
+  --app-border-color: #ded3f7;
+  --control-bg: #ffffff;
+  --control-border: #d8ccf3;
+  --control-text: #211a3f;
+  --send-button-bg: #6d28d9;
+  --send-button-hover-bg: #5b21b6;
+  --send-button-end: #8b5cf6;
+  --focus-ring: rgba(124, 58, 237, 0.14);
+  --soft-shadow: rgba(91, 33, 182, 0.1);
+  --message-user-end: #8b5cf6;
+  --message-bot-start: rgba(255, 255, 255, 0.96);
+  --message-bot-end: #eee7ff;
+  --message-bot-border: #ded3f7;
+  --scrollbar-track: rgba(244, 240, 255, 0.72);
+  --scrollbar-thumb: linear-gradient(180deg, #c4b5fd 0%, #7c3aed 100%);
+  --scrollbar-thumb-solid: #8b5cf6;
+  --scrollbar-thumb-hover: #6d28d9;
+  --scrollbar-border: rgba(255, 255, 255, 0.72);
+}
+
+body,
+.btn {
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+body.theme-switching {
+  overflow: hidden;
+}
+
+body.theme-switching::before,
+body.theme-switching::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body.theme-switching::before {
+  width: 36vmax;
+  height: 36vmax;
+  top: 68px;
+  right: 24px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--accent) 32%, white) 0 14%, transparent 15% 100%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0 0, transparent 68%);
+  filter: blur(1px);
+  animation: theme-ripple 0.9s ease-out forwards;
+}
+
+body.theme-switching::after {
+  width: 6px;
+  height: 6px;
+  top: 82px;
+  right: 44px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow:
+    -18px 26px 0 #7c3aed,
+    22px 18px 0 #00f0ff,
+    48px 42px 0 #ffffff,
+    -42px 52px 0 #4f46e5,
+    8px 72px 0 #b7f7ff,
+    -66px 12px 0 #ffffff,
+    72px 6px 0 #7c3aed,
+    -8px -18px 0 #00f0ff;
+  animation: theme-sparkles 0.85s ease-out forwards;
+}
+
+body.theme-switching main {
+  animation: theme-image-pulse 0.75s ease both;
+}
+
+/* TEMA OSCURO - Aplica a todos los elementos */
+body.dark-theme {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.12), transparent 30%),
+    radial-gradient(circle at 100% 20%, rgba(127, 29, 58, 0.16), transparent 34%),
+    var(--bg-main);
+  color: #ffffff;
+}
+
+body.dark-theme .bg-light {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .bg-white {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .bg-primary {
+  background-color: var(--send-button-bg) !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .btn-outline-light {
+  border-color: var(--control-border);
+  color: #ffffff;
+}
+
+body.dark-theme .btn-outline-light:hover,
+body.dark-theme .btn-outline-light:focus-visible {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+/* TEMA CLARO */
+body.light-theme {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(167, 139, 250, 0.12), transparent 28%),
+    var(--bg-main);
+  color: var(--text-primary);
+}
+
+body.light-theme .btn-outline-light {
+  border-color: #b9c8dd;
+  color: #364153;
+}
+
+body.light-theme .btn-outline-light:hover,
+body.light-theme .btn-outline-light:focus-visible {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+@keyframes theme-ripple {
+  0% {
+    opacity: 0;
+    transform: translate(20%, -20%) scale(0.04);
+  }
+
+  22% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(20%, -20%) scale(5.8);
+  }
+}
+
+@keyframes theme-sparkles {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-86px, 96px) scale(1.35) rotate(28deg);
+  }
+}
+
+@keyframes theme-image-pulse {
+  0% {
+    filter: saturate(1) brightness(1);
+  }
+
+  45% {
+    filter: saturate(1.25) brightness(1.12);
+  }
+
+  100% {
+    filter: saturate(1) brightness(1);
+  }
+}
+
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.18em;
+    filter: blur(8px);
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  100% {
+    letter-spacing: 0;
+    filter: blur(0);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes thinking-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0) scale(0.82);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .btn {
+    transition: none;
+  }
+
+  body.theme-switching::before,
+  body.theme-switching::after,
+  body.theme-switching main {
+    animation: none;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="chat-input-bar d-flex gap-2 align-items-center">
+  
+  <!-- Botón Emojis -->
+  <button class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
+    😊
+  </button>
+
+  <!-- Input Mensaje -->
+  <input 
+    type="text"
+    [(ngModel)]="userMessage"
+    class="form-control rounded-pill" 
+    placeholder="Escribe un mensaje..."
+    (keyup.enter)="sendMessage()"
+  />
+
+  <!-- Botón Adjuntar Archivo -->
+  <button class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
+    📎
+  </button>
+
+  <!-- Botón Enviar -->
+  <button class="chat-input-icon btn btn-primary rounded-circle p-2" (click)="sendMessage()">
+    ➤
+  </button>
+
+</div>

@@ -1,0 +1,19 @@
+<div class="app-message-list">
+
+  @for (message of messages$ | async; track message.id) {
+    <app-message-item
+      [message]="message">
+    </app-message-item>
+  }
+
+  @if (isBotThinking$ | async) {
+    <div class="thinking-row">
+      <div class="thinking-bubble">
+        <span class="thinking-dot"></span>
+        <span class="thinking-dot"></span>
+        <span class="thinking-dot"></span>
+      </div>
+    </div>
+  }
+
+</div>

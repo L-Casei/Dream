@@ -1,0 +1,271 @@
+
+.chat-shell {
+  height: 100vh;
+}
+
+.app-aside-shell {
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: var(--aside-bg);
+  color: var(--aside-text);
+  transition:
+    width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.app-aside-shell.aside-collapsed {
+  width: 56px;
+}
+
+.aside-content {
+  height: 100%;
+  padding-top: 0;
+  overflow: hidden;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aside-collapsed .aside-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.aside-toggle {
+  position: absolute;
+  top: 16px;
+  right: 7px;
+  z-index: 4;
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--aside-border);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, var(--control-bg), var(--bg-secondary));
+  color: var(--accent-strong, var(--accent));
+  box-shadow:
+    0 10px 24px var(--soft-shadow),
+    0 0 0 3px var(--accent-soft);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aside-toggle:hover,
+.aside-toggle:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.aside-toggle-icon {
+  display: block;
+  font-size: 1.55rem;
+  height: 3.5vh;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aside-toggle-collapsed .aside-toggle-icon {
+  transform: rotate(180deg);
+}
+
+header {
+  background-color: var(--app-header-bg) !important;
+  color: var(--text-primary);
+  border-color: var(--app-border-color) !important;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 1px 0 var(--app-border-color);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.theme-toggle {
+  appearance: none;
+  position: relative;
+  width: 72px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px;
+  border: 1px solid var(--control-border);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, var(--control-bg), var(--bg-secondary));
+  color: var(--text-secondary);
+  box-shadow:
+    0 10px 24px var(--soft-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color 0.25s ease,
+    background 0.35s ease,
+    box-shadow 0.25s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--accent);
+  box-shadow:
+    0 12px 26px var(--soft-shadow),
+    0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+
+.theme-toggle-icon {
+  position: relative;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition:
+    opacity 0.25s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s ease;
+}
+
+.theme-toggle-sun {
+  color: #f59e0b;
+}
+
+.theme-toggle-moon {
+  color: #7dd3fc;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.95), transparent 34%),
+    linear-gradient(135deg, #fde68a, #f59e0b);
+  box-shadow:
+    0 8px 18px rgba(245, 158, 11, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.46);
+  transition:
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.theme-toggle-dark .theme-toggle-thumb {
+  transform: translateX(34px);
+  background:
+    radial-gradient(circle at 62% 35%, rgba(255, 255, 255, 0.9), transparent 14%),
+    linear-gradient(135deg, #0ea5e9, #1e1b4b);
+  box-shadow:
+    0 8px 18px rgba(14, 165, 233, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.theme-toggle-dark .theme-toggle-sun,
+.theme-toggle:not(.theme-toggle-dark) .theme-toggle-moon {
+  opacity: 0.42;
+  transform: scale(0.86);
+}
+
+.chat-main {
+  max-width: 100%;
+  max-height: 100%;
+  background-color: var(--bg-main) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-solid) var(--scrollbar-track);
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    filter 0.35s ease;
+}
+
+.chat-main::-webkit-scrollbar {
+  width: 12px;
+}
+
+.chat-main::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-left: 1px solid var(--app-border-color);
+}
+
+.chat-main::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border: 3px solid var(--scrollbar-border);
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+.chat-main::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+footer {
+  background-color: var(--app-footer-bg) !important;
+  border-color: var(--app-border-color) !important;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 -12px 34px rgba(0, 0, 0, 0.06);
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+:host-context(body.light-theme) .app-aside-shell {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, var(--aside-bg) 100%),
+    radial-gradient(circle at top left, rgba(167, 139, 250, 0.18), transparent 34%) !important;
+  border-right: 1px solid var(--aside-border);
+  box-shadow: 8px 0 28px rgba(91, 33, 182, 0.08);
+}
+
+:host-context(body.dark-theme) .app-aside-shell {
+  background:
+    linear-gradient(180deg, rgba(10, 20, 36, 0.98), rgba(7, 14, 26, 0.98)),
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(127, 29, 58, 0.16), transparent 42%) !important;
+  border-right: 1px solid var(--aside-border);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.24);
+}
+
+:host-context(body.dark-theme) footer {
+  box-shadow: 0 -14px 38px rgba(0, 0, 0, 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-aside-shell,
+  .aside-content,
+  .aside-toggle,
+  .aside-toggle-icon,
+  header,
+  .chat-main,
+  footer {
+    transition: none;
+  }
+}
