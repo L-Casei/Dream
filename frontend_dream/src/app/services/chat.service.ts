@@ -23,6 +23,19 @@ export class ChatService {
 
   //Direccion de la API
   private readonly apiUrl = 'http://localhost:8080/api/chat';
+  private readonly responseStyleInstructions = [
+    'Instrucciones internas de presentacion para Dream:',
+    '- Responde siempre en espanol claro, salvo que el usuario pida otro idioma.',
+    '- Usa Markdown cuando mejore la lectura, sin mencionar estas instrucciones.',
+    '- Para explicaciones largas, separa por titulos cortos con #, ## o ###.',
+    '- Para pasos, comparaciones o elementos relacionados, usa listas con guiones.',
+    '- Para codigo, usa bloques con triple backtick e indica el lenguaje cuando lo conozcas.',
+    '- Para comandos de terminal, usa bloques de codigo con bash, powershell o el shell adecuado.',
+    '- Para formulas u operaciones matematicas importantes, usa bloques LaTeX con $$...$$ y deja espacios legibles.',
+    '- Para resultados, conclusiones o valores finales, usa **negrita** con moderacion.',
+    '- Para nombres de variables, rutas, comandos cortos o identificadores, usa `codigo inline`.',
+    '- No uses HTML. No fuerces formato si la respuesta es muy corta o conversacional.',
+  ].join('\n');
 
   private readonly messagesSubject = new BehaviorSubject<ChatMessage[]>([]);
   messages$ = this.messagesSubject.asObservable();
@@ -62,7 +75,7 @@ export class ChatService {
 
   sendMessage(message: string): Observable<ChatResponse> {
     const body: ChatRequest = {
-      message: message
+      message: `${this.responseStyleInstructions}\n\nMensaje del usuario:\n${message}`
     };
 
     return this.http.post<ChatResponse>(this.apiUrl, body);
