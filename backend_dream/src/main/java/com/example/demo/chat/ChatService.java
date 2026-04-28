@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatService {
 
-    //Chat Service maneja el mensaje que ha llegado al controlador y llama a OpenAiClient
+    //Chat Service maneja el mensaje que ha llegado al controlador y llama a GeminiClient
 
-    private final OpenAiClient openAiClient;
+    private final GeminiClient geminiClient;
 
-    public ChatService(OpenAiClient openAiClient) {
-        this.openAiClient = openAiClient;
+    public ChatService(GeminiClient geminiClient) {
+        this.geminiClient = geminiClient;
     }
 
     public ChatResponse generateAnswer(ChatRequest request) {
@@ -20,6 +20,6 @@ public class ChatService {
             return new ChatResponse("Necesito que escribas un mensaje para poder responderte.");
         }
 
-        return new ChatResponse(openAiClient.generateAnswer(message.trim()));
+        return new ChatResponse(geminiClient.generateAnswer(message.trim()));
     }
 }
