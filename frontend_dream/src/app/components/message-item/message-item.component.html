@@ -4,14 +4,91 @@
   [class.justify-content-start]="message.role === 'bot'"
 >
   <div
-    class="message-bubble p-3 rounded text-white"
+    class="message-bubble"
     [class.bg-primary]="message.role === 'user'"
     [class.bg-secondary]="message.role === 'bot'"
   >
-    <p class="mb-0">{{ message.content }}</p>
+    <div class="message-content">
+      @for (block of blocks; track $index) {
+        @switch (block.type) {
+          @case ('heading') {
+            <h3 class="message-heading">
+              @for (token of block.tokens; track $index) {
+                @switch (token.type) {
+                  @case ('code') {
+                    <code>{{ token.text }}</code>
+                  }
+                  @case ('strong') {
+                    <strong>{{ token.text }}</strong>
+                  }
+                  @default {
+                    <span>{{ token.text }}</span>
+                  }
+                }
+              }
+            </h3>
+          }
+
+          @case ('paragraph') {
+            <p class="message-paragraph">
+              @for (token of block.tokens; track $index) {
+                @switch (token.type) {
+                  @case ('code') {
+                    <code>{{ token.text }}</code>
+                  }
+                  @case ('strong') {
+                    <strong>{{ token.text }}</strong>
+                  }
+                  @default {
+                    <span>{{ token.text }}</span>
+                  }
+                }
+              }
+            </p>
+          }
+
+          @case ('list') {
+            <ul class="message-list">
+              @for (item of block.items; track $index) {
+                <li>
+                  @for (token of item; track $index) {
+                    @switch (token.type) {
+                      @case ('code') {
+                        <code>{{ token.text }}</code>
+                      }
+                      @case ('strong') {
+                        <strong>{{ token.text }}</strong>
+                      }
+                      @default {
+                        <span>{{ token.text }}</span>
+                      }
+                    }
+                  }
+                </li>
+              }
+            </ul>
+          }
+
+          @case ('code') {
+            <figure class="code-block">
+              @if (block.language) {
+                <figcaption>{{ block.language }}</figcaption>
+              }
+              <pre><code>{{ block.content }}</code></pre>
+            </figure>
+          }
+
+          @case ('math') {
+            <div class="math-block" aria-label="Formula matematica">
+              <pre>{{ block.content }}</pre>
+            </div>
+          }
+        }
+      }
+    </div>
 
     @if (message.role === 'bot') {
-      <small>{{ message.agentName }} - {{ message.agentId }}</small>
+      <small class="message-meta">{{ message.agentName }} - {{ message.agentId }}</small>
     }
   </div>
 </div>
