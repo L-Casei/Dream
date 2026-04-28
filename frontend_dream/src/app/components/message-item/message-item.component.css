@@ -4,9 +4,11 @@
 
 .message-bubble {
   max-width: 70%;
-  border-radius: 18px !important;
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
   box-shadow: 0 12px 30px var(--soft-shadow, rgba(23, 20, 47, 0.12));
   animation: tracking-in-expand 0.65s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  overflow: hidden;
 }
 
 .message-bubble.bg-primary {
@@ -22,13 +24,142 @@
   color: var(--text-primary, #17142f) !important;
 }
 
-.message-bubble small {
+.message-content {
+  display: grid;
+  gap: 0.72rem;
+  min-width: 0;
+}
+
+.message-heading {
+  margin: 0;
+  color: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.message-paragraph {
+  margin: 0;
+  color: inherit;
+  font-size: 0.98rem;
+  line-height: 1.68;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.58;
+}
+
+.message-list li::marker {
+  color: var(--accent, #7c3aed);
+}
+
+.message-bubble code {
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  border-radius: 6px;
+  background: rgba(124, 58, 237, 0.1);
+  color: inherit;
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.9em;
+  padding: 0.08rem 0.3rem;
+}
+
+.code-block,
+.math-block {
+  margin: 0;
+  border: 1px solid var(--message-bot-border, #ded3f7);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--control-bg, #ffffff) 86%, transparent);
+  overflow: hidden;
+}
+
+.code-block figcaption {
+  border-bottom: 1px solid var(--message-bot-border, #ded3f7);
+  color: var(--text-secondary, #6b6384);
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  padding: 0.45rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.code-block pre,
+.math-block pre {
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-block pre {
+  padding: 0.78rem 0.88rem;
+}
+
+.code-block pre code {
+  display: block;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  padding: 0;
+}
+
+.math-block {
+  background:
+    linear-gradient(90deg, rgba(124, 58, 237, 0.1), transparent 42%),
+    color-mix(in srgb, var(--control-bg, #ffffff) 90%, transparent);
+}
+
+.math-block pre {
+  color: var(--text-primary, #17142f);
+  font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  padding: 0.9rem 1rem;
+}
+
+.message-meta {
+  display: block;
+  margin-top: 0.68rem;
   color: var(--text-secondary, #6b6384);
   font-weight: 500;
 }
 
-.message-bubble.bg-primary small {
+.message-bubble.bg-primary .message-meta {
   color: rgba(255, 255, 255, 0.78);
+}
+
+.message-bubble.bg-primary .message-list li::marker {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.message-bubble.bg-primary code,
+.message-bubble.bg-primary .code-block,
+.message-bubble.bg-primary .math-block {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.message-bubble.bg-primary .code-block figcaption {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.message-bubble.bg-primary .math-block pre {
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .message-bubble {
+    max-width: 88%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
