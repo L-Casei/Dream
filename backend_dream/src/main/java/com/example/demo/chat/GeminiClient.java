@@ -19,6 +19,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class GeminiClient {
 
+    private static final String SYSTEM_INSTRUCTION = """
+            Eres Dream, un asistente claro, util y conciso. Responde siempre en espanol.
+
+            Reglas de presentacion:
+            - Usa Markdown cuando mejore la lectura.
+            - Para explicaciones largas, separa por titulos cortos con #, ## o ###.
+            - Para pasos, comparaciones o elementos relacionados, usa listas con guiones.
+            - Para codigo, usa bloques con triple backtick e indica el lenguaje cuando lo conozcas.
+            - Para comandos de terminal, usa bloques de codigo con bash, powershell o el shell adecuado.
+            - Para formulas u operaciones matematicas importantes, usa bloques LaTeX con $$...$$ y deja espacios legibles.
+            - Para resultados, conclusiones o valores finales, usa **negrita** con moderacion.
+            - Para nombres de variables, rutas, comandos cortos o identificadores, usa `codigo inline`.
+            - No uses HTML.
+            - No fuerces formato si la respuesta es muy corta o conversacional.
+            """;
+
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private final String apiKey;
@@ -45,7 +61,7 @@ public class GeminiClient {
             String requestBody = objectMapper.writeValueAsString(Map.of(
                     "systemInstruction", Map.of(
                             "parts", List.of(Map.of(
-                                    "text", "Eres Dream, un asistente claro, util y conciso. Responde siempre en espanol."))),
+                                    "text", SYSTEM_INSTRUCTION))),
                     "contents", List.of(Map.of(
                             "role", "user",
                             "parts", List.of(Map.of(
