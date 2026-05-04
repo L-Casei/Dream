@@ -1,1 +1,159 @@
-<p>register works!</p>
+@let isDarkMode = (isDarkMode$ | async) === true;
+
+<section class="register-page" [class.register-dark]="isDarkMode" [class.register-light]="!isDarkMode">
+  <header class="register-header">
+    <a class="register-brand" routerLink="/" aria-label="Volver a DREAM AI">
+      <img src="/assets/images/dream.png" alt="Dream logo" class="register-logo">
+      <span>DREAM</span>
+    </a>
+
+    <div class="register-actions">
+      <div class="settings-wrap">
+        <button
+          type="button"
+          class="icon-action settings-button"
+          (click)="toggleSettings()"
+          aria-label="Ajustes"
+          title="Ajustes"
+        >
+          <img src="/assets/images/settings.png" alt="Ajustes" class="register-icon-img">
+        </button>
+
+        @if (isSettingsOpen) {
+          <div class="settings-menu">
+            <button type="button" class="settings-row" (click)="toggleTheme()">
+              <span>Tema</span>
+              <strong>{{ isDarkMode ? 'Oscuro' : 'Claro' }}</strong>
+            </button>
+
+            <button type="button" class="settings-row" disabled>
+              <span>Idioma</span>
+              <strong>Proximamente</strong>
+            </button>
+
+            <button type="button" class="settings-row">
+              <span>Asistencia</span>
+              <strong>Contactar</strong>
+            </button>
+          </div>
+        }
+      </div>
+
+      <button type="button" class="header-button header-button-ghost" routerLink="/">
+        Inicio
+      </button>
+
+      <button type="button" class="header-button header-button-solid" routerLink="/login">
+        Iniciar sesión
+      </button>
+    </div>
+  </header>
+
+  <main class="register-main">
+    <section class="register-card" aria-label="Formulario de registro">
+      <div class="register-copy">
+        <span class="register-kicker">Nueva cuenta</span>
+        <h1>Crea tu cuenta en DREAM AI</h1>
+        <p>
+          Guarda tus conversaciones, continúa tus ideas y empieza a construir tu pequeño universo con DREAM.
+        </p>
+      </div>
+
+      <form class="register-form" (ngSubmit)="register()">
+        <label class="form-field">
+          <span>Nombre</span>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="name"
+            placeholder="Tu nombre"
+            autocomplete="name"
+          >
+        </label>
+
+        <label class="form-field">
+          <span>Email</span>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="tu@email.com"
+            autocomplete="email"
+          >
+        </label>
+
+        <label class="form-field">
+          <span>Contraseña</span>
+
+          <div class="password-field">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Mínimo 6 caracteres"
+              autocomplete="new-password"
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+            >
+              {{ showPassword ? 'Ocultar' : 'Ver' }}
+            </button>
+          </div>
+        </label>
+
+        <label class="form-field">
+          <span>Confirmar contraseña</span>
+
+          <div class="password-field">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              placeholder="Repite tu contraseña"
+              autocomplete="new-password"
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="toggleConfirmPasswordVisibility()"
+            >
+              {{ showConfirmPassword ? 'Ocultar' : 'Ver' }}
+            </button>
+          </div>
+        </label>
+
+        <label class="checkbox-field terms-field">
+          <input
+            type="checkbox"
+            name="acceptTerms"
+            [(ngModel)]="acceptTerms"
+          >
+          <span>Acepto los términos y la política de privacidad.</span>
+        </label>
+
+        @if (errorMessage) {
+          <p class="register-error">
+            {{ errorMessage }}
+          </p>
+        }
+
+        <button
+          type="submit"
+          class="register-submit"
+          [disabled]="!name.trim() || !email.trim() || !password || !confirmPassword || !acceptTerms"
+        >
+          Crear cuenta
+        </button>
+      </form>
+
+      <p class="register-footer-text">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login">Iniciar sesión</a>
+      </p>
+    </section>
+  </main>
+</section>
