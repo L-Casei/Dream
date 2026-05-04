@@ -67,7 +67,7 @@
     <!-- Boton Emojis -->
     <button
       type="button"
-      class="emoji-toggle chat-input-icon btn btn-primary btn-outline-secondary rounded-circle p-2"
+      class="emoji-toggle chat-input-icon chat-input-icon-plain btn rounded-circle p-2"
       (click)="toggleEmojiPicker($event)"
       [disabled]="isLoading"
       aria-label="Abrir teclado de emojis"
@@ -98,7 +98,7 @@
     <!-- Boton Adjuntar Archivo -->
     <button
       type="button"
-      class="chat-input-icon btn-primary btn btn-outline-secondary rounded-circle p-2"
+      class="chat-input-icon chat-input-icon-plain btn rounded-circle p-2"
       (click)="openFilePicker()"
       [disabled]="isLoading"
       aria-label="Adjuntar archivo"
@@ -110,7 +110,7 @@
     <!-- Boton Enviar -->
     <button
       type="button"
-      class="chat-input-icon  btn btn-primary rounded-circle p-2"
+      class="chat-input-icon chat-input-icon-send btn rounded-circle p-2"
       (click)="sendMessage()"
       [disabled]="isLoading || (!userMessage.trim() && attachedFileViews.length === 0)"
       aria-label="Enviar mensaje"
