@@ -49,6 +49,10 @@ export class ChatService {
     return this.messagesSubject.getValue();
   }
 
+  clearMessages(): void {
+    this.messagesSubject.next([]);
+  }
+
   addUserMessage(content: string, attachments: ChatAttachment[] = []): void {
     this.addMessage({
       id: Date.now(),

@@ -31,14 +31,54 @@
     </div>
   }
 
+  @if (isEmojiPickerOpen) {
+    <div class="emoji-picker-shell" (click)="$event.stopPropagation()">
+      <input
+        type="text"
+        class="emoji-search"
+        [(ngModel)]="emojiSearch"
+        placeholder="Buscar categoria..."
+        aria-label="Buscar emojis"
+      />
+
+      <div class="emoji-category-list">
+        @for (category of filteredEmojiCategories; track category.name) {
+          <section class="emoji-category">
+            <h5>{{ category.name }}</h5>
+            <div class="emoji-grid">
+              @for (emoji of category.emojis; track emoji) {
+                <button
+                  type="button"
+                  class="emoji-option"
+                  (click)="insertEmoji(emoji)"
+                  [attr.aria-label]="'Insertar emoji ' + emoji"
+                >
+                  {{ emoji }}
+                </button>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    </div>
+  }
+
   <div class="chat-input-bar d-flex gap-2 align-items-center">
     <!-- Boton Emojis -->
-    <button type="button" class="chat-input-icon btn  btn-primary btn-outline-secondary rounded-circle p-2">
+    <button
+      type="button"
+      class="emoji-toggle chat-input-icon btn btn-primary btn-outline-secondary rounded-circle p-2"
+      (click)="toggleEmojiPicker($event)"
+      [disabled]="isLoading"
+      aria-label="Abrir teclado de emojis"
+      title="Emojis"
+    >
       <img src="/assets/images/emoji.png" alt="Adjuntar Archivo" class="chat-input-icon-img">
     </button>
 
     <!-- Input Mensaje -->
     <input
+      #messageInput
       type="text"
       [(ngModel)]="userMessage"
       class="form-control rounded-pill"
