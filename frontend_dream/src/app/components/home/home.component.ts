@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AsyncPipe, FormsModule],
+  imports: [AsyncPipe, FormsModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -57,4 +57,5 @@ export class HomeComponent {
 
     return !localStorage.getItem('dream-cookie-choice');
   }
+  
 }
