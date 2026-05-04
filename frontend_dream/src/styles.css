@@ -10,6 +10,32 @@ select {
   font-style: normal;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  scrollbar-color: var(--scrollbar-thumb-solid, #8b5cf6) var(--scrollbar-track, rgba(244, 240, 255, 0.72));
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track, rgba(244, 240, 255, 0.72));
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--scrollbar-border, rgba(255, 255, 255, 0.72));
+  border-radius: 999px;
+  background: var(--scrollbar-thumb, linear-gradient(180deg, #c4b5fd 0%, #7c3aed 100%));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover, #6d28d9);
+}
+
 /* Variables para tema oscuro */
 :root[data-theme="dark"],
 body.dark-theme {

@@ -28,7 +28,7 @@
 
             <button type="button" class="settings-row" disabled>
               <span>Idioma</span>
-              <strong>Proximamente</strong>
+              <strong>Pronto</strong>
             </button>
 
             <button type="button" class="settings-row">
@@ -44,19 +44,17 @@
       </button>
 
       <button type="button" class="header-button header-button-solid" routerLink="/login">
-        Iniciar sesión
+        Iniciar sesion
       </button>
     </div>
   </header>
 
   <main class="register-main">
-    <section class="register-card" aria-label="Formulario de registro">
+    <section class="auth-card register-card" aria-label="Formulario de registro">
       <div class="register-copy">
         <span class="register-kicker">Nueva cuenta</span>
         <h1>Crea tu cuenta en DREAM AI</h1>
-        <p>
-          Guarda tus conversaciones, continúa tus ideas y empieza a construir tu pequeño universo con DREAM.
-        </p>
+        <p>Guarda conversaciones, conserva contexto y construye tu espacio de trabajo personal.</p>
       </div>
 
       <form class="register-form" (ngSubmit)="register()">
@@ -90,7 +88,7 @@
               [type]="showPassword ? 'text' : 'password'"
               name="password"
               [(ngModel)]="password"
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Minimo 6 caracteres"
               autocomplete="new-password"
             >
 
@@ -104,6 +102,13 @@
           </div>
         </label>
 
+        @if (password) {
+          <div class="password-strength" [class.strength-media]="passwordStrength === 'Media'" [class.strength-alta]="passwordStrength === 'Alta'">
+            <span></span>
+            <strong>Seguridad {{ passwordStrength }}</strong>
+          </div>
+        }
+
         <label class="form-field">
           <span>Confirmar contraseña</span>
 
@@ -112,7 +117,7 @@
               [type]="showConfirmPassword ? 'text' : 'password'"
               name="confirmPassword"
               [(ngModel)]="confirmPassword"
-              placeholder="Repite tu contraseña"
+              placeholder="Repite tu contrasena"
               autocomplete="new-password"
             >
 
@@ -132,7 +137,7 @@
             name="acceptTerms"
             [(ngModel)]="acceptTerms"
           >
-          <span>Acepto los términos y la política de privacidad.</span>
+          <span>Acepto los terminos y la politica de privacidad.</span>
         </label>
 
         @if (errorMessage) {
@@ -144,15 +149,21 @@
         <button
           type="submit"
           class="register-submit"
-          [disabled]="!name.trim() || !email.trim() || !password || !confirmPassword || !acceptTerms"
+          [disabled]="!canSubmit"
         >
           Crear cuenta
         </button>
       </form>
 
+      <div class="auth-divider">
+        <span></span>
+        <small>DREAM AI</small>
+        <span></span>
+      </div>
+
       <p class="register-footer-text">
-        ¿Ya tienes cuenta?
-        <a routerLink="/login">Iniciar sesión</a>
+        Ya tienes cuenta?
+        <a routerLink="/login">Iniciar sesion</a>
       </p>
     </section>
   </main>

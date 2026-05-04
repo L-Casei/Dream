@@ -28,7 +28,7 @@
 
             <button type="button" class="settings-row" disabled>
               <span>Idioma</span>
-              <strong>Proximamente</strong>
+              <strong>Pronto</strong>
             </button>
 
             <button type="button" class="settings-row">
@@ -50,13 +50,11 @@
   </header>
 
   <main class="login-main">
-    <section class="login-card" aria-label="Formulario de inicio de sesión">
+    <section class="auth-card login-card" aria-label="Formulario de inicio de sesion">
       <div class="login-copy">
         <span class="login-kicker">Bienvenido de vuelta</span>
-        <h1>Inicia sesión en DREAM AI</h1>
-        <p>
-          Entra y continúa tus conversaciones donde las dejaste.
-        </p>
+        <h1>Inicia sesion en DREAM AI</h1>
+        <p>Recupera tus chats, continua ideas pendientes y vuelve al trabajo sin friccion.</p>
       </div>
 
       <form class="login-form" (ngSubmit)="login()">
@@ -104,7 +102,7 @@
           </label>
 
           <button type="button" class="link-button">
-            ¿Olvidaste la contraseña?
+            Recuperar contraseña
           </button>
         </div>
 
@@ -117,14 +115,20 @@
         <button
           type="submit"
           class="login-submit"
-          [disabled]="!email.trim() || !password"
+          [disabled]="!canSubmit"
         >
           Entrar
         </button>
       </form>
 
+      <div class="auth-divider">
+        <span></span>
+        <small>DREAM AI</small>
+        <span></span>
+      </div>
+
       <p class="login-footer-text">
-        ¿No tienes cuenta?
+        No tienes cuenta?
         <a routerLink="/register">Crear cuenta</a>
       </p>
     </section>

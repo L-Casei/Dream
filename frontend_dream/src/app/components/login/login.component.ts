@@ -26,6 +26,10 @@ export class LoginComponent {
 
   errorMessage = '';
 
+  get canSubmit(): boolean {
+    return this.email.trim().length > 0 && this.password.length > 0;
+  }
+
   login(): void {
     const cleanEmail = this.email.trim();
 
@@ -35,14 +39,14 @@ export class LoginComponent {
     }
 
     if (!this.isValidEmail(cleanEmail)) {
-      this.errorMessage = 'Introduce un email válido.';
+      this.errorMessage = 'Introduce un email valido.';
       return;
     }
 
     this.errorMessage = '';
 
     // De momento no hay backend de auth.
-    // Cuando tengas AuthService, aquí llamarás al login real.
+    // Cuando tengas AuthService, aqui llamaras al login real.
     console.log('Login:', {
       email: cleanEmail,
       password: this.password,
