@@ -33,8 +33,8 @@
 
   <div class="chat-input-bar d-flex gap-2 align-items-center">
     <!-- Boton Emojis -->
-    <button type="button" class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
-      &#9786;
+    <button type="button" class="chat-input-icon btn  btn-primary btn-outline-secondary rounded-circle p-2">
+      <img src="/assets/images/emoji.png" alt="Adjuntar Archivo" class="chat-input-icon-img">
     </button>
 
     <!-- Input Mensaje -->
@@ -58,25 +58,25 @@
     <!-- Boton Adjuntar Archivo -->
     <button
       type="button"
-      class="chat-input-icon btn btn-outline-secondary rounded-circle p-2"
+      class="chat-input-icon btn-primary btn btn-outline-secondary rounded-circle p-2"
       (click)="openFilePicker()"
       [disabled]="isLoading"
       aria-label="Adjuntar archivo"
       title="Adjuntar archivo"
     >
-      <img src="/assets/images/add-file.png" alt="Adjuntar Archivo" class="chat-input-icon-img">
+      <img src="/assets/images/add-file.png" alt="Adjuntar Archivo" class="chat-input-icon-img add-button">
     </button>
 
     <!-- Boton Enviar -->
     <button
       type="button"
-      class="chat-input-icon btn btn-primary rounded-circle p-2"
+      class="chat-input-icon  btn btn-primary rounded-circle p-2"
       (click)="sendMessage()"
       [disabled]="isLoading || (!userMessage.trim() && attachedFileViews.length === 0)"
       aria-label="Enviar mensaje"
       title="Enviar mensaje"
     >
-      &#10148;
+      <img src="/assets/images/send.png" alt="Enviar" class="chat-input-icon-img send-button">
     </button>
   </div>
 </div>
