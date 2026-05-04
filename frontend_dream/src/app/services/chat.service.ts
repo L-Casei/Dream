@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChatMessage } from '../models/chatMessage';
+import { ChatAttachment, ChatMessage } from '../models/chatMessage';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -49,11 +49,12 @@ export class ChatService {
     return this.messagesSubject.getValue();
   }
 
-  addUserMessage(content: string): void {
+  addUserMessage(content: string, attachments: ChatAttachment[] = []): void {
     this.addMessage({
       id: Date.now(),
       content,
       role: 'user',
+      attachments,
       timestamp: new Date()
     });
   }
@@ -73,11 +74,23 @@ export class ChatService {
     this.botThinkingSubject.next(isThinking);
   }
 
-  sendMessage(message: string): Observable<ChatResponse> {
-    const body: ChatRequest = {
-      message: `${this.responseStyleInstructions}\n\nMensaje del usuario:\n${message}`
-    };
+  sendMessage(message: string, files: File[] = []): Observable<ChatResponse> {
+    const formattedMessage = `${this.responseStyleInstructions}\n\nMensaje del usuario:\n${message}`;
 
+    if (files.length > 0) {
+      const body = new FormData();
+      body.append('message', formattedMessage);
+
+      files.forEach((file) => {
+        body.append('files', file, file.name);
+      });
+
+      return this.http.post<ChatResponse>(this.apiUrl, body);
+    }
+
+    const body: ChatRequest = {
+      message: formattedMessage
+    };
     return this.http.post<ChatResponse>(this.apiUrl, body);
   }
 

@@ -132,6 +132,67 @@
   font-weight: 500;
 }
 
+.message-attachments {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.message-attachment {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  padding: 0.42rem;
+}
+
+.message-attachment-preview,
+.message-attachment-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+}
+
+.message-attachment-preview {
+  object-fit: cover;
+}
+
+.message-attachment-icon {
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.message-attachment-info {
+  display: grid;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.message-attachment-name,
+.message-attachment-size {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-attachment-name {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.message-attachment-size {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.74rem;
+}
+
 .message-bubble.bg-primary .message-meta {
   color: rgba(255, 255, 255, 0.78);
 }
@@ -154,6 +215,20 @@
 
 .message-bubble.bg-primary .math-block pre {
   color: #ffffff;
+}
+
+.message-bubble.bg-secondary .message-attachment {
+  border-color: var(--message-bot-border, #ded3f7);
+  background: color-mix(in srgb, var(--control-bg, #ffffff) 86%, transparent);
+}
+
+.message-bubble.bg-secondary .message-attachment-icon {
+  background: var(--accent-soft, #eee7ff);
+  color: var(--accent-strong, #5b21b6);
+}
+
+.message-bubble.bg-secondary .message-attachment-size {
+  color: var(--text-secondary, #6b6384);
 }
 
 @media (max-width: 768px) {

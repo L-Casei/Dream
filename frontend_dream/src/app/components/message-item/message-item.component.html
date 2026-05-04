@@ -9,81 +9,102 @@
     [class.bg-secondary]="message.role === 'bot'"
   >
     <div class="message-content">
-      @for (block of blocks; track $index) {
-        @switch (block.type) {
-          @case ('heading') {
-            <h3 class="message-heading">
-              @for (token of block.tokens; track $index) {
-                @switch (token.type) {
-                  @case ('code') {
-                    <code>{{ token.text }}</code>
-                  }
-                  @case ('strong') {
-                    <strong>{{ token.text }}</strong>
-                  }
-                  @default {
-                    <span>{{ token.text }}</span>
-                  }
-                }
-              }
-            </h3>
-          }
-
-          @case ('paragraph') {
-            <p class="message-paragraph">
-              @for (token of block.tokens; track $index) {
-                @switch (token.type) {
-                  @case ('code') {
-                    <code>{{ token.text }}</code>
-                  }
-                  @case ('strong') {
-                    <strong>{{ token.text }}</strong>
-                  }
-                  @default {
-                    <span>{{ token.text }}</span>
-                  }
-                }
-              }
-            </p>
-          }
-
-          @case ('list') {
-            <ul class="message-list">
-              @for (item of block.items; track $index) {
-                <li>
-                  @for (token of item; track $index) {
-                    @switch (token.type) {
-                      @case ('code') {
-                        <code>{{ token.text }}</code>
-                      }
-                      @case ('strong') {
-                        <strong>{{ token.text }}</strong>
-                      }
-                      @default {
-                        <span>{{ token.text }}</span>
-                      }
+      @if (blocks.length > 0) {
+        @for (block of blocks; track $index) {
+          @switch (block.type) {
+            @case ('heading') {
+              <h3 class="message-heading">
+                @for (token of block.tokens; track $index) {
+                  @switch (token.type) {
+                    @case ('code') {
+                      <code>{{ token.text }}</code>
+                    }
+                    @case ('strong') {
+                      <strong>{{ token.text }}</strong>
+                    }
+                    @default {
+                      <span>{{ token.text }}</span>
                     }
                   }
-                </li>
-              }
-            </ul>
-          }
+                }
+              </h3>
+            }
 
-          @case ('code') {
-            <figure class="code-block">
-              @if (block.language) {
-                <figcaption>{{ block.language }}</figcaption>
-              }
-              <pre><code>{{ block.content }}</code></pre>
-            </figure>
-          }
+            @case ('paragraph') {
+              <p class="message-paragraph">
+                @for (token of block.tokens; track $index) {
+                  @switch (token.type) {
+                    @case ('code') {
+                      <code>{{ token.text }}</code>
+                    }
+                    @case ('strong') {
+                      <strong>{{ token.text }}</strong>
+                    }
+                    @default {
+                      <span>{{ token.text }}</span>
+                    }
+                  }
+                }
+              </p>
+            }
 
-          @case ('math') {
-            <div class="math-block" aria-label="Formula matematica">
-              <pre>{{ block.content }}</pre>
-            </div>
+            @case ('list') {
+              <ul class="message-list">
+                @for (item of block.items; track $index) {
+                  <li>
+                    @for (token of item; track $index) {
+                      @switch (token.type) {
+                        @case ('code') {
+                          <code>{{ token.text }}</code>
+                        }
+                        @case ('strong') {
+                          <strong>{{ token.text }}</strong>
+                        }
+                        @default {
+                          <span>{{ token.text }}</span>
+                        }
+                      }
+                    }
+                  </li>
+                }
+              </ul>
+            }
+
+            @case ('code') {
+              <figure class="code-block">
+                @if (block.language) {
+                  <figcaption>{{ block.language }}</figcaption>
+                }
+                <pre><code>{{ block.content }}</code></pre>
+              </figure>
+            }
+
+            @case ('math') {
+              <div class="math-block" aria-label="Formula matematica">
+                <pre>{{ block.content }}</pre>
+              </div>
+            }
           }
         }
+      }
+
+      @if (message.attachments?.length) {
+        <div class="message-attachments">
+          @for (file of message.attachments; track file.id) {
+            <div class="message-attachment">
+              @if (isImage(file) && file.previewUrl) {
+                <img class="message-attachment-preview" [src]="file.previewUrl" [alt]="file.name">
+              } @else {
+                <span class="message-attachment-icon">FILE</span>
+              }
+
+              <span class="message-attachment-info">
+                <span class="message-attachment-name">{{ file.name }}</span>
+                <span class="message-attachment-size">{{ formatFileSize(file.size) }}</span>
+              </span>
+            </div>
+          }
+        </div>
       }
     </div>
 

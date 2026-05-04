@@ -6,8 +6,7 @@ button,
 input,
 textarea,
 select {
-  font-family: "Cause", cursive;
-  font-optical-sizing: auto;
+  font-family: "Poppins", sans-serif;
   font-style: normal;
 }
 
