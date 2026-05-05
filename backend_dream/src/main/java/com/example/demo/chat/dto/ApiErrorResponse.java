@@ -1,4 +1,4 @@
-package com.example.demo.chat.exception;
+package com.example.demo.chat.dto;
 
 public record ApiErrorResponse(String message) {
 }
