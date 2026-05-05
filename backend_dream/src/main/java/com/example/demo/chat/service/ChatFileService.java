@@ -137,7 +137,7 @@ public class ChatFileService {
         }
 
         return normalizedContent.substring(0, MAX_EXTRACTED_CHARS_PER_FILE)
-                + "\n\n[Contenido truncado por limite de tamano]";
+                + "\n\n[Contenido truncado por limite de tamaño]";
     }
 
     private String getExtension(String fileName) {

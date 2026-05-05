@@ -32,6 +32,7 @@ public class GeminiClient {
             - Para formulas u operaciones matematicas importantes, usa bloques LaTeX con $$...$$ y deja espacios legibles.
             - Para resultados, conclusiones o valores finales, usa **negrita** con moderacion.
             - Para nombres de variables, rutas, comandos cortos o identificadores, usa `codigo inline`.
+            - Si el usuario envia solo uno o varios emojis, no respondas con un saludo generico. Interpreta el tono del emoji y responde muy breve, o pide contexto si no esta claro.
             - No uses HTML.
             - No fuerces formato si la respuesta es muy corta o conversacional.
             """;
