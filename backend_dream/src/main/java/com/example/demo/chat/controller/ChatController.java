@@ -1,4 +1,4 @@
-package com.example.demo.chat;
+package com.example.demo.chat.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.chat.dto.ChatRequest;
+import com.example.demo.chat.dto.ChatResponse;
+import com.example.demo.chat.service.ChatService;
 
 @RestController
 @RequestMapping("/api/chat")

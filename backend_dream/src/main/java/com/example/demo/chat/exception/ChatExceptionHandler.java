@@ -1,4 +1,4 @@
-package com.example.demo.chat;
+package com.example.demo.chat.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

@@ -1,6 +1,10 @@
-package com.example.demo.chat;
+package com.example.demo.chat.service;
 
 import org.springframework.stereotype.Service;
+
+import com.example.demo.chat.client.GeminiClient;
+import com.example.demo.chat.dto.ChatRequest;
+import com.example.demo.chat.dto.ChatResponse;
 
 @Service
 public class ChatService {

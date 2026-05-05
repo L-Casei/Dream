@@ -1,4 +1,4 @@
-package com.example.demo.chat;
+package com.example.demo.chat.client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,6 +13,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.chat.exception.GeminiException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
