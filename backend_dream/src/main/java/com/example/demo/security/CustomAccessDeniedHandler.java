@@ -14,14 +14,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-//Esta clase se usa para cuando un usuario ya autenticado intenta acceder a un recurso al que no tiene permisos
-
+// Devuelve JSON cuando un usuario autenticado no tiene permisos.
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    //Metodo que maneja las excepciones de acceso denegado, devolviendo un JSON con detalles del error
 
     @Override
     public void handle(HttpServletRequest request,
@@ -31,8 +28,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
-
-        //JSON creado cuando un usuario intenta acceder a un recurso sin los permisos necesarios
 
         Map<String, Object> body = Map.of(
                 "timestamp", LocalDateTime.now().toString(),

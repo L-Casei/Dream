@@ -1,107 +1,85 @@
 package com.example.demo.security;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    /**
-     * 1️⃣ Seguridad para la API REST (/api/**) - Devuelve JSON en lugar de
-     * redirigir a login. - Usa tu CustomAccessDeniedHandler y
-     * CustomAuthenticationEntryPoint.
-     */
     @Bean
-    @Order(1)
-    public SecurityFilterChain apiSecurityFilterChain(
+    SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             CustomAccessDeniedHandler accessDeniedHandler,
             CustomAuthenticationEntryPoint authenticationEntryPoint) throws Exception {
 
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/me").authenticated()
-                        .requestMatchers("/api/users/**").hasAuthority("ROLE_ADMIN")
-                        // Todo lo demás, requiere autenticación
-                        .anyRequest().authenticated())
-                .securityMatcher("/api/**")
+        return http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable())
                 .exceptionHandling(ex -> ex
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint))
-                .csrf(csrf -> csrf.disable()) // Desactiva CSRF solo para APIs
-                .httpBasic(withDefaults()); // o puedes usar token si más adelante quieres JWT
-
-        return http.build();
-    }
-
-    /**
-     * Seguridad para la interfaz web (HTML) - Usa formLogin normal. - Redirige
-     * al formulario de login si no estás autenticado.
-     */
-    @Bean
-    @Order(2)
-    public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
-        http
                 .authorizeHttpRequests(auth -> auth
-                        // Recursos estáticos públicos
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/shared/**",
-                        "/dashboard/**", "/app/**", "/departments/**", "/favicon.ico", "/fidamc.png", "/auth/**", "/forms/**")
-                        .permitAll()
-                        /**Añado para LOGOUT que no funcionaba */
-                        .requestMatchers("/logout/**").permitAll()
-                        // Páginas públicas
-                        .requestMatchers("/login", "/error", "/logout-success").permitAll()
-                        // Endpoints protegidos por rol
-                        // .requestMatchers("/api/users/**").permitAll()
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        // Pagina de administración solo para ADMIN
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // Ejemplo: POST a /guardar requiere login
-                        .requestMatchers(HttpMethod.POST, "/guardar").authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // DREAM permite usar el chat sin iniciar sesion.
+                        .requestMatchers(HttpMethod.POST, "/api/chat").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/health", "/actuator/health").permitAll()
+
+                        // Preparado para auth real cuando conectemos login/register.
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // Futuro: perfil, historial privado y administracion.
                         .requestMatchers("/api/users/me").authenticated()
+                        .requestMatchers("/api/conversations/**").authenticated()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // Todo lo demás, requiere autenticación
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/login") // 👉 usa tu nueva página personalizada
-                        .defaultSuccessUrl("/", true)
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/logout-success")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll());
-
-        return http.build();
+                        // De momento el resto no queda bloqueado para no romper el front.
+                        .anyRequest().permitAll())
+                .httpBasic(basic -> basic.disable())
+                .build();
     }
 
-    // Exponer AuthenticationManager para el endpoint /api/auth/token
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:4200",
+                "http://127.0.0.1:4200"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
-    // UserDetailsService ya está registrado por JpaUserDetailsService (@Service),
-    // Spring lo detecta.
-    // Password encoder
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    // No explicit AuthenticationProvider bean: Spring Boot will detect the
-    // JpaUserDetailsService (@Service) and PasswordEncoder beans and register
-    // a DaoAuthenticationProvider automatically.
 }

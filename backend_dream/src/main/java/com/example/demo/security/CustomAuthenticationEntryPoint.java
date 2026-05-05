@@ -13,8 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-//Esta clase se usa para cuando un usuario intenta acceder a un recurso sin estar autenticado
-
+// Devuelve JSON cuando un usuario intenta acceder sin autenticarse.
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -32,7 +31,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 "timestamp", LocalDateTime.now().toString(),
                 "status", 401,
                 "error", "Unauthorized",
-                "message", "Debes iniciar sesión para acceder a este recurso.",
+                "message", "Debes iniciar sesion para acceder a este recurso.",
                 "path", request.getRequestURI()
         );
 
