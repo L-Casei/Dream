@@ -2,8 +2,9 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { ChatAttachment, ChatMessage } from '../../models/chatMessage';
 
 type InlineToken = {
-  type: 'text' | 'code' | 'strong';
+  type: 'text' | 'code' | 'strong' | 'link';
   text: string;
+  href?: string;
 };
 
 type MessageBlock =
@@ -11,7 +12,8 @@ type MessageBlock =
   | { type: 'heading'; tokens: InlineToken[] }
   | { type: 'list'; items: InlineToken[][] }
   | { type: 'code'; language: string; content: string }
-  | { type: 'math'; content: string };
+  | { type: 'math'; content: string }
+  | { type: 'table'; headers: InlineToken[][]; rows: InlineToken[][][] };
 
 @Component({
   selector: 'app-message-item',
@@ -19,14 +21,13 @@ type MessageBlock =
   templateUrl: './message-item.component.html',
   styleUrl: './message-item.component.css',
 })
-
 export class MessageItemComponent implements OnChanges {
   @Input() message!: ChatMessage;
 
   blocks: MessageBlock[] = [];
 
   ngOnChanges(): void {
-    this.blocks = this.parseMessage(this.message?.content ?? '');
+    this.blocks = this.parseMessage(this.message?.text ?? '');
   }
 
   formatFileSize(size: number): string {
@@ -43,6 +44,19 @@ export class MessageItemComponent implements OnChanges {
 
   isImage(file: ChatAttachment): boolean {
     return file.type.startsWith('image/');
+  }
+
+  getStatusText(): string {
+    switch (this.message.status) {
+      case 'sending':
+        return 'Enviando';
+      case 'error':
+        return 'Error';
+      case 'sent':
+        return 'Enviado';
+      default:
+        return '';
+    }
   }
 
   private parseMessage(content: string): MessageBlock[] {
@@ -134,6 +148,21 @@ export class MessageItemComponent implements OnChanges {
         continue;
       }
 
+      if (this.isTableStart(lines, index)) {
+        flushParagraph();
+        const headers = this.splitTableRow(lines[index]).map((cell) => this.parseInline(cell));
+        index += 2;
+        const rows: InlineToken[][][] = [];
+
+        while (index < lines.length && this.isTableRow(lines[index])) {
+          rows.push(this.splitTableRow(lines[index]).map((cell) => this.parseInline(cell)));
+          index++;
+        }
+
+        blocks.push({ type: 'table', headers, rows });
+        continue;
+      }
+
       if (/^[-*]\s+/.test(trimmedLine)) {
         flushParagraph();
         const items: InlineToken[][] = [];
@@ -157,7 +186,7 @@ export class MessageItemComponent implements OnChanges {
 
   private parseInline(text: string): InlineToken[] {
     const tokens: InlineToken[] = [];
-    const inlinePattern = /(`[^`]+`|\*\*[^*]+\*\*)/g;
+    const inlinePattern = /(\[[^\]]+\]\((https?:\/\/[^)\s]+)\)|`[^`]+`|\*\*[^*]+\*\*)/g;
     let lastIndex = 0;
     let match: RegExpExecArray | null;
 
@@ -169,8 +198,15 @@ export class MessageItemComponent implements OnChanges {
       const value = match[0];
       if (value.startsWith('`')) {
         tokens.push({ type: 'code', text: value.slice(1, -1) });
-      } else {
+      } else if (value.startsWith('**')) {
         tokens.push({ type: 'strong', text: value.slice(2, -2) });
+      } else {
+        const labelEnd = value.indexOf('](');
+        tokens.push({
+          type: 'link',
+          text: value.slice(1, labelEnd),
+          href: value.slice(labelEnd + 2, -1)
+        });
       }
 
       lastIndex = match.index + value.length;
@@ -181,5 +217,17 @@ export class MessageItemComponent implements OnChanges {
     }
 
     return tokens;
+  }
+
+  private isTableStart(lines: string[], index: number): boolean {
+    return this.isTableRow(lines[index]) && index + 1 < lines.length && /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(lines[index + 1]);
+  }
+
+  private isTableRow(line: string): boolean {
+    return line.includes('|') && line.trim().split('|').filter(Boolean).length >= 2;
+  }
+
+  private splitTableRow(line: string): string[] {
+    return line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim());
   }
 }

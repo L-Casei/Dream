@@ -19,8 +19,14 @@ export class ChatInputComponent {
   isDraggingFile = false;
   isEmojiPickerOpen = false;
   emojiSearch = '';
+  attachmentError = '';
   attachedFiles: File[] = [];
   attachedFileViews: ChatAttachment[] = [];
+  readonly maxFilesPerMessage = 5;
+  readonly maxFileSizeBytes = 10 * 1024 * 1024;
+  readonly maxTotalSizeBytes = 25 * 1024 * 1024;
+  readonly allowedExtensions = new Set(['pdf', 'txt', 'md', 'csv', 'json', 'png', 'jpg', 'jpeg', 'webp']);
+  readonly blockedExtensions = new Set(['exe', 'bat', 'cmd', 'sh', 'zip', 'rar', '7z', 'jar', 'class']);
   readonly emojiCategories = [
     {
       name: 'Caras',
@@ -167,7 +173,11 @@ export class ChatInputComponent {
     });
   }
 
-  removeFile(fileId: string): void {
+  removeFile(fileId?: string): void {
+    if (!fileId) {
+      return;
+    }
+
     const fileView = this.attachedFileViews.find((file) => file.id === fileId);
 
     if (fileView?.previewUrl) {
@@ -187,21 +197,24 @@ export class ChatInputComponent {
       return;
     }
 
-    this.chatService.addUserMessage(text, attachments);
+    const userMessage = this.chatService.createUserMessage(text, attachments);
 
     this.userMessage = '';
     this.clearAttachedFiles(false);
+    this.attachmentError = '';
     this.isLoading = true;
     this.chatService.setBotThinking(true);
 
     this.chatService.sendMessage(text, files).subscribe({
       next: (response) => {
+        this.chatService.updateMessageStatus(userMessage.id, 'sent');
         this.chatService.setBotThinking(false);
         this.chatService.addBotMessage(response.answer);
         this.isLoading = false;
       },
       error: (error) => {
         console.error('Error al enviar mensaje:', error);
+        this.chatService.updateMessageStatus(userMessage.id, 'error');
         this.chatService.setBotThinking(false);
         this.chatService.addBotMessage('Ha ocurrido un error al contactar con la IA.');
         this.isLoading = false;
@@ -230,11 +243,20 @@ export class ChatInputComponent {
       return;
     }
 
-    Array.from(fileList).forEach((file) => {
+    this.attachmentError = '';
+
+    for (const file of Array.from(fileList)) {
+      const validationError = this.validateFile(file);
+
+      if (validationError) {
+        this.attachmentError = validationError;
+        continue;
+      }
+
       const id = this.createFileId(file);
 
       if (this.attachedFileViews.some((attachedFile) => attachedFile.id === id)) {
-        return;
+        continue;
       }
 
       this.attachedFiles.push(file);
@@ -245,7 +267,7 @@ export class ChatInputComponent {
         type: file.type || 'application/octet-stream',
         previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined
       });
-    });
+    }
   }
 
   private clearAttachedFiles(revokeUrls: boolean): void {
@@ -263,6 +285,34 @@ export class ChatInputComponent {
 
   private createFileId(file: File): string {
     return `${file.name}-${file.size}-${file.lastModified}`;
+  }
+
+  private validateFile(file: File): string | null {
+    const extension = this.getFileExtension(file.name);
+
+    if (this.attachedFiles.length >= this.maxFilesPerMessage) {
+      return `Puedes adjuntar como maximo ${this.maxFilesPerMessage} archivos por mensaje.`;
+    }
+
+    if (this.blockedExtensions.has(extension) || !this.allowedExtensions.has(extension)) {
+      return `Formato no permitido: ${file.name}`;
+    }
+
+    if (file.size > this.maxFileSizeBytes) {
+      return `El archivo ${file.name} supera el limite de 10 MB.`;
+    }
+
+    const totalSize = this.attachedFiles.reduce((sum, attachedFile) => sum + attachedFile.size, 0) + file.size;
+
+    if (totalSize > this.maxTotalSizeBytes) {
+      return 'El mensaje supera el limite total de 25 MB en adjuntos.';
+    }
+
+    return null;
+  }
+
+  private getFileExtension(fileName: string): string {
+    return fileName.split('.').pop()?.toLowerCase() ?? '';
   }
 
   private hasFiles(event: DragEvent): boolean {

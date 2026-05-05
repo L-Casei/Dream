@@ -316,6 +316,17 @@
   color: var(--accent-strong, #5b21b6);
 }
 
+.attachment-error {
+  margin: 0;
+  border: 1px solid rgba(239, 68, 68, 0.26);
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 0.7rem;
+}
+
 @media (max-width: 480px) {
   .emoji-picker-shell {
     left: 50%;

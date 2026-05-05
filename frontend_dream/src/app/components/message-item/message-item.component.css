@@ -24,6 +24,10 @@
   color: var(--text-primary, #17142f) !important;
 }
 
+.message-bubble.message-error {
+  outline: 2px solid rgba(239, 68, 68, 0.38);
+}
+
 .message-content {
   display: grid;
   gap: 0.72rem;
@@ -69,6 +73,13 @@
   padding: 0.08rem 0.3rem;
 }
 
+.message-bubble a {
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
 .code-block,
 .math-block {
   margin: 0;
@@ -94,6 +105,30 @@
   margin: 0;
   overflow-x: auto;
   white-space: pre;
+}
+
+.message-table-wrap {
+  overflow-x: auto;
+}
+
+.message-table {
+  width: 100%;
+  min-width: 360px;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.message-table th,
+.message-table td {
+  border: 1px solid var(--message-bot-border, #ded3f7);
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.message-table th {
+  background: rgba(124, 58, 237, 0.1);
+  font-weight: 800;
 }
 
 .code-block pre {
@@ -195,6 +230,10 @@
 
 .message-bubble.bg-primary .message-meta {
   color: rgba(255, 255, 255, 0.78);
+}
+
+.message-status {
+  font-size: 0.72rem;
 }
 
 .message-bubble.bg-primary .message-list li::marker {

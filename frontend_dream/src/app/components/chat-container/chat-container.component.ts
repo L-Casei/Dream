@@ -29,16 +29,18 @@ export class ChatContainerComponent implements OnInit {
     }
 
     this.chatService.clearMessages();
-    this.chatService.addUserMessage(initialMessage);
+    const userMessage = this.chatService.createUserMessage(initialMessage);
     this.chatService.setBotThinking(true);
 
     this.chatService.sendMessage(initialMessage).subscribe({
       next: (response) => {
+        this.chatService.updateMessageStatus(userMessage.id, 'sent');
         this.chatService.setBotThinking(false);
         this.chatService.addBotMessage(response.answer);
       },
       error: (error) => {
         console.error('Error al enviar mensaje inicial:', error);
+        this.chatService.updateMessageStatus(userMessage.id, 'error');
         this.chatService.setBotThinking(false);
         this.chatService.addBotMessage('Ha ocurrido un error al contactar con la IA.');
       }

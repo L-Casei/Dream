@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // DREAM permite usar el chat sin iniciar sesion.
-                        .requestMatchers(HttpMethod.POST, "/api/chat").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/chat", "/api/chat/with-files").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/health", "/actuator/health").permitAll()
 
                         // Preparado para auth real cuando conectemos login/register.

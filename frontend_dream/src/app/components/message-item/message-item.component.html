@@ -1,12 +1,13 @@
 <div
   class="message-row d-flex"
   [class.justify-content-end]="message.role === 'user'"
-  [class.justify-content-start]="message.role === 'bot'"
+  [class.justify-content-start]="message.role !== 'user'"
 >
   <div
     class="message-bubble"
     [class.bg-primary]="message.role === 'user'"
-    [class.bg-secondary]="message.role === 'bot'"
+    [class.bg-secondary]="message.role !== 'user'"
+    [class.message-error]="message.status === 'error'"
   >
     <div class="message-content">
       @if (blocks.length > 0) {
@@ -21,6 +22,9 @@
                     }
                     @case ('strong') {
                       <strong>{{ token.text }}</strong>
+                    }
+                    @case ('link') {
+                      <a [href]="token.href" target="_blank" rel="noopener noreferrer">{{ token.text }}</a>
                     }
                     @default {
                       <span>{{ token.text }}</span>
@@ -39,6 +43,9 @@
                     }
                     @case ('strong') {
                       <strong>{{ token.text }}</strong>
+                    }
+                    @case ('link') {
+                      <a [href]="token.href" target="_blank" rel="noopener noreferrer">{{ token.text }}</a>
                     }
                     @default {
                       <span>{{ token.text }}</span>
@@ -59,6 +66,9 @@
                         }
                         @case ('strong') {
                           <strong>{{ token.text }}</strong>
+                        }
+                        @case ('link') {
+                          <a [href]="token.href" target="_blank" rel="noopener noreferrer">{{ token.text }}</a>
                         }
                         @default {
                           <span>{{ token.text }}</span>
@@ -84,6 +94,63 @@
                 <pre>{{ block.content }}</pre>
               </div>
             }
+
+            @case ('table') {
+              <div class="message-table-wrap">
+                <table class="message-table">
+                  <thead>
+                    <tr>
+                      @for (header of block.headers; track $index) {
+                        <th>
+                          @for (token of header; track $index) {
+                            @switch (token.type) {
+                              @case ('code') {
+                                <code>{{ token.text }}</code>
+                              }
+                              @case ('strong') {
+                                <strong>{{ token.text }}</strong>
+                              }
+                              @case ('link') {
+                                <a [href]="token.href" target="_blank" rel="noopener noreferrer">{{ token.text }}</a>
+                              }
+                              @default {
+                                <span>{{ token.text }}</span>
+                              }
+                            }
+                          }
+                        </th>
+                      }
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of block.rows; track $index) {
+                      <tr>
+                        @for (cell of row; track $index) {
+                          <td>
+                            @for (token of cell; track $index) {
+                              @switch (token.type) {
+                                @case ('code') {
+                                  <code>{{ token.text }}</code>
+                                }
+                                @case ('strong') {
+                                  <strong>{{ token.text }}</strong>
+                                }
+                                @case ('link') {
+                                  <a [href]="token.href" target="_blank" rel="noopener noreferrer">{{ token.text }}</a>
+                                }
+                                @default {
+                                  <span>{{ token.text }}</span>
+                                }
+                              }
+                            }
+                          </td>
+                        }
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
           }
         }
       }
@@ -100,7 +167,7 @@
 
               <span class="message-attachment-info">
                 <span class="message-attachment-name">{{ file.name }}</span>
-                <span class="message-attachment-size">{{ formatFileSize(file.size) }}</span>
+                <span class="message-attachment-size">{{ file.type || 'archivo' }} - {{ formatFileSize(file.size) }}</span>
               </span>
             </div>
           }
@@ -108,8 +175,10 @@
       }
     </div>
 
-    @if (message.role === 'bot') {
-      <small class="message-meta">{{ message.agentName }} - {{ message.agentId }}</small>
+    @if (message.role === 'assistant') {
+      <small class="message-meta">Dream - BETA</small>
+    } @else if (message.status) {
+      <small class="message-meta message-status">{{ getStatusText() }}</small>
     }
   </div>
 </div>

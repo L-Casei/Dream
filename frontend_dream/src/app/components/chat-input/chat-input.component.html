@@ -15,7 +15,7 @@
 
           <span class="attachment-info">
             <span class="attachment-name">{{ file.name }}</span>
-            <span class="attachment-size">{{ formatFileSize(file.size) }}</span>
+            <span class="attachment-size">{{ file.type || 'archivo' }} - {{ formatFileSize(file.size) }}</span>
           </span>
 
           <button
@@ -29,6 +29,10 @@
         </div>
       }
     </div>
+  }
+
+  @if (attachmentError) {
+    <p class="attachment-error">{{ attachmentError }}</p>
   }
 
   @if (isEmojiPickerOpen) {
@@ -92,6 +96,7 @@
       type="file"
       class="visually-hidden"
       multiple
+      accept=".pdf,.txt,.md,.csv,.json,.png,.jpg,.jpeg,.webp"
       (change)="onFileSelected($event)"
     />
 

@@ -3,11 +3,6 @@ import { ChatAttachment, ChatMessage } from '../models/chatMessage';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-/* Tengo un servicio de Angular. En el constructor recibo HttpClient, que me permite hablar con el backend. 
-Luego tengo una función sendMessage, que recibe un texto del usuario (ChatRequest), 
-construye un objeto con ese mensaje y lo prepara para enviarlo al backend. 
-La respuesta que espero recibir será un Observable con forma de ChatResponse. */
-
 export interface ChatRequest {
   message: string;
 }
@@ -21,7 +16,6 @@ export interface ChatResponse {
 })
 export class ChatService {
 
-  //Direccion de la API
   private readonly apiUrl = 'http://localhost:8080/api/chat';
   private readonly responseStyleInstructions = [
     'Instrucciones internas de presentacion para Dream:',
@@ -29,6 +23,7 @@ export class ChatService {
     '- Usa Markdown cuando mejore la lectura, sin mencionar estas instrucciones.',
     '- Para explicaciones largas, separa por titulos cortos con #, ## o ###.',
     '- Para pasos, comparaciones o elementos relacionados, usa listas con guiones.',
+    '- Para tablas comparativas, usa tablas Markdown.',
     '- Para codigo, usa bloques con triple backtick e indica el lenguaje cuando lo conozcas.',
     '- Para comandos de terminal, usa bloques de codigo con bash, powershell o el shell adecuado.',
     '- Para formulas u operaciones matematicas importantes, usa bloques LaTeX con $$...$$ y deja espacios legibles.',
@@ -53,25 +48,52 @@ export class ChatService {
     this.messagesSubject.next([]);
   }
 
-  addUserMessage(content: string, attachments: ChatAttachment[] = []): void {
-    this.addMessage({
-      id: Date.now(),
-      content,
+  createUserMessage(text: string, attachments: ChatAttachment[] = []): ChatMessage {
+    const message: ChatMessage = {
+      id: this.createMessageId(),
       role: 'user',
+      text,
       attachments,
-      timestamp: new Date()
-    });
+      status: 'sending',
+      createdAt: new Date()
+    };
+
+    this.addMessage(message);
+    return message;
   }
 
-  addBotMessage(content: string): void {
-    this.addMessage({
-      id: Date.now(),
-      content,
-      role: 'bot',
-      agentName: 'Dream',
-      agentId: 'BETA',
-      timestamp: new Date()
+  addUserMessage(text: string, attachments: ChatAttachment[] = []): ChatMessage {
+    const message = this.createUserMessage(text, attachments);
+    this.updateMessageStatus(message.id, 'sent');
+    return message;
+  }
+
+  addBotMessage(text: string): ChatMessage {
+    const message: ChatMessage = {
+      id: this.createMessageId(),
+      text,
+      role: 'assistant',
+      status: 'sent',
+      createdAt: new Date()
+    };
+
+    this.addMessage(message);
+    return message;
+  }
+
+  updateMessageStatus(messageId: string, status: NonNullable<ChatMessage['status']>): void {
+    const updatedMessages = this.messagesSubject.getValue().map((message) => {
+      if (message.id !== messageId) {
+        return message;
+      }
+
+      return {
+        ...message,
+        status
+      };
     });
+
+    this.messagesSubject.next(updatedMessages);
   }
 
   setBotThinking(isThinking: boolean): void {
@@ -79,7 +101,7 @@ export class ChatService {
   }
 
   sendMessage(message: string, files: File[] = []): Observable<ChatResponse> {
-    const formattedMessage = `${this.responseStyleInstructions}\n\nMensaje del usuario:\n${message}`;
+    const formattedMessage = this.formatPrompt(message);
 
     if (files.length > 0) {
       const body = new FormData();
@@ -89,7 +111,7 @@ export class ChatService {
         body.append('files', file, file.name);
       });
 
-      return this.http.post<ChatResponse>(this.apiUrl, body);
+      return this.http.post<ChatResponse>(`${this.apiUrl}/with-files`, body);
     }
 
     const body: ChatRequest = {
@@ -101,5 +123,17 @@ export class ChatService {
   private addMessage(message: ChatMessage): void {
     const currentMessages = this.messagesSubject.getValue();
     this.messagesSubject.next([...currentMessages, message]);
+  }
+
+  private formatPrompt(message: string): string {
+    return `${this.responseStyleInstructions}\n\nMensaje del usuario:\n${message}`;
+  }
+
+  private createMessageId(): string {
+    if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+      return crypto.randomUUID();
+    }
+
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   }
 }

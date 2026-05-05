@@ -1,12 +1,10 @@
-import { Message } from '../models/chatMessage';
+import { ChatMessage } from '../models/chatMessage';
 
-//Es un ejemplo de mensaje de bot, en un futuro vendran de una API
-
-export const messageData: Message = {
-    id: 1,
+// Mensaje de ejemplo para pruebas locales.
+export const messageData: ChatMessage = {
+    id: 'demo-message',
     text: 'Hello! How can I assist you today?',
-    sender: 'bot',
-    agentName: 'Dream',
-    agentId: 'BETA',
-    timestamp: new Date()
-}
+    role: 'assistant',
+    status: 'sent',
+    createdAt: new Date()
+};

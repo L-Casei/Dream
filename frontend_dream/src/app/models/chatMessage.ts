@@ -1,17 +1,17 @@
 export interface ChatAttachment {
-    id: string;
+    id?: string;
     name: string;
-    size: number;
     type: string;
+    size: number;
     previewUrl?: string;
+    url?: string;
 }
 
 export interface ChatMessage {
-    id: number;
-    content: string;
-    role: 'user' | 'bot';
-    agentName?: string; //Es la marca
-    agentId?: string; //Es la version del agente que responde
+    id: string;
+    role: 'user' | 'assistant' | 'system';
+    text?: string;
     attachments?: ChatAttachment[];
-    timestamp: Date;
+    status?: 'sending' | 'sent' | 'error';
+    createdAt: Date;
 }
