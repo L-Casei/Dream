@@ -1,0 +1,136 @@
+@let isDarkMode = (isDarkMode$ | async) === true;
+
+<section class="login-page" [class.login-dark]="isDarkMode" [class.login-light]="!isDarkMode">
+  <header class="login-header">
+    <a class="login-brand" routerLink="/" aria-label="Volver a DREAM AI">
+      <img src="/assets/images/dream.png" alt="Dream logo" class="login-logo">
+      <span>DREAM</span>
+    </a>
+
+    <div class="login-actions">
+      <div class="settings-wrap">
+        <button
+          type="button"
+          class="icon-action settings-button"
+          (click)="toggleSettings()"
+          aria-label="Ajustes"
+          title="Ajustes"
+        >
+          <img src="/assets/images/settings.png" alt="Ajustes" class="login-icon-img">
+        </button>
+
+        @if (isSettingsOpen) {
+          <div class="settings-menu">
+            <button type="button" class="settings-row" (click)="toggleTheme()">
+              <span>Tema</span>
+              <strong>{{ isDarkMode ? 'Oscuro' : 'Claro' }}</strong>
+            </button>
+
+            <button type="button" class="settings-row" disabled>
+              <span>Idioma</span>
+              <strong>Pronto</strong>
+            </button>
+
+            <button type="button" class="settings-row">
+              <span>Asistencia</span>
+              <strong>Contactar</strong>
+            </button>
+          </div>
+        }
+      </div>
+
+      <button type="button" class="header-button header-button-ghost" routerLink="/">
+        Inicio
+      </button>
+
+      <button type="button" class="header-button header-button-solid" routerLink="/register">
+        Crear cuenta
+      </button>
+    </div>
+  </header>
+
+  <main class="login-main">
+    <section class="auth-card login-card" aria-label="Formulario de inicio de sesion">
+      <div class="login-copy">
+        <span class="login-kicker">Bienvenido de vuelta</span>
+        <h1>Inicia sesion en DREAM AI</h1>
+        <p>Recupera tus chats, continua ideas pendientes y vuelve al trabajo sin friccion.</p>
+      </div>
+
+      <form class="login-form" (ngSubmit)="login()">
+        <label class="form-field">
+          <span>Email</span>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="tu@email.com"
+            autocomplete="email"
+          >
+        </label>
+
+        <label class="form-field">
+          <span>Contraseña</span>
+
+          <div class="password-field">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Tu contraseña"
+              autocomplete="current-password"
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+            >
+              {{ showPassword ? 'Ocultar' : 'Ver' }}
+            </button>
+          </div>
+        </label>
+
+        <div class="form-options">
+          <label class="checkbox-field">
+            <input
+              type="checkbox"
+              name="rememberSession"
+              [(ngModel)]="rememberSession"
+            >
+            <span>Recordarme</span>
+          </label>
+
+          <button type="button" class="link-button">
+            Recuperar contraseña
+          </button>
+        </div>
+
+        @if (errorMessage) {
+          <p class="login-error">
+            {{ errorMessage }}
+          </p>
+        }
+
+        <button
+          type="submit"
+          class="login-submit"
+          [disabled]="!canSubmit"
+        >
+          Entrar
+        </button>
+      </form>
+
+      <div class="auth-divider">
+        <span></span>
+        <small>DREAM AI</small>
+        <span></span>
+      </div>
+
+      <p class="login-footer-text">
+        No tienes cuenta?
+        <a routerLink="/register">Crear cuenta</a>
+      </p>
+    </section>
+  </main>
+</section>

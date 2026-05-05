@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ChatMessage } from '../../models/chatMessage';
+import { ChatAttachment, ChatMessage } from '../../models/chatMessage';
 
 type InlineToken = {
   type: 'text' | 'code' | 'strong';
@@ -27,6 +27,22 @@ export class MessageItemComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.blocks = this.parseMessage(this.message?.content ?? '');
+  }
+
+  formatFileSize(size: number): string {
+    if (size < 1024) {
+      return `${size} B`;
+    }
+
+    if (size < 1024 * 1024) {
+      return `${(size / 1024).toFixed(1)} KB`;
+    }
+
+    return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  }
+
+  isImage(file: ChatAttachment): boolean {
+    return file.type.startsWith('image/');
   }
 
   private parseMessage(content: string): MessageBlock[] {

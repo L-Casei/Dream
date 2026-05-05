@@ -1,27 +1,122 @@
-<div class="chat-input-bar d-flex gap-2 align-items-center">
-  
-  <!-- Botón Emojis -->
-  <button class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
-    😊
-  </button>
+<div class="chat-input-panel" [class.drag-active]="isDraggingFile">
+  @if (isDraggingFile) {
+    <div class="drop-hint">Suelta el archivo para adjuntarlo</div>
+  }
 
-  <!-- Input Mensaje -->
-  <input 
-    type="text"
-    [(ngModel)]="userMessage"
-    class="form-control rounded-pill" 
-    placeholder="Escribe un mensaje..."
-    (keyup.enter)="sendMessage()"
-  />
+  @if (attachedFileViews.length > 0) {
+    <div class="attachment-list">
+      @for (file of attachedFileViews; track file.id) {
+        <div class="attachment-chip">
+          @if (isImage(file) && file.previewUrl) {
+            <img class="attachment-preview" [src]="file.previewUrl" [alt]="file.name">
+          } @else {
+            <span class="attachment-file-icon">FILE</span>
+          }
 
-  <!-- Botón Adjuntar Archivo -->
-  <button class="chat-input-icon btn btn-outline-secondary rounded-circle p-2">
-    📎
-  </button>
+          <span class="attachment-info">
+            <span class="attachment-name">{{ file.name }}</span>
+            <span class="attachment-size">{{ formatFileSize(file.size) }}</span>
+          </span>
 
-  <!-- Botón Enviar -->
-  <button class="chat-input-icon btn btn-primary rounded-circle p-2" (click)="sendMessage()">
-    ➤
-  </button>
+          <button
+            type="button"
+            class="attachment-remove"
+            (click)="removeFile(file.id)"
+            [attr.aria-label]="'Quitar ' + file.name"
+          >
+            x
+          </button>
+        </div>
+      }
+    </div>
+  }
 
+  @if (isEmojiPickerOpen) {
+    <div class="emoji-picker-shell" (click)="$event.stopPropagation()">
+      <input
+        type="text"
+        class="emoji-search"
+        [(ngModel)]="emojiSearch"
+        placeholder="Buscar categoria..."
+        aria-label="Buscar emojis"
+      />
+
+      <div class="emoji-category-list">
+        @for (category of filteredEmojiCategories; track category.name) {
+          <section class="emoji-category">
+            <h5>{{ category.name }}</h5>
+            <div class="emoji-grid">
+              @for (emoji of category.emojis; track emoji) {
+                <button
+                  type="button"
+                  class="emoji-option"
+                  (click)="insertEmoji(emoji)"
+                  [attr.aria-label]="'Insertar emoji ' + emoji"
+                >
+                  {{ emoji }}
+                </button>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="chat-input-bar d-flex gap-2 align-items-center">
+    <!-- Boton Emojis -->
+    <button
+      type="button"
+      class="emoji-toggle chat-input-icon chat-input-icon-plain btn rounded-circle p-2"
+      (click)="toggleEmojiPicker($event)"
+      [disabled]="isLoading"
+      aria-label="Abrir teclado de emojis"
+      title="Emojis"
+    >
+      <img src="/assets/images/emoji.png" alt="Adjuntar Archivo" class="chat-input-icon-img">
+    </button>
+
+    <!-- Input Mensaje -->
+    <input
+      #messageInput
+      type="text"
+      [(ngModel)]="userMessage"
+      class="form-control rounded-pill"
+      placeholder="Escribe un mensaje..."
+      (keyup.enter)="sendMessage()"
+      [disabled]="isLoading"
+    />
+
+    <input
+      #fileInput
+      type="file"
+      class="visually-hidden"
+      multiple
+      (change)="onFileSelected($event)"
+    />
+
+    <!-- Boton Adjuntar Archivo -->
+    <button
+      type="button"
+      class="chat-input-icon chat-input-icon-plain btn rounded-circle p-2"
+      (click)="openFilePicker()"
+      [disabled]="isLoading"
+      aria-label="Adjuntar archivo"
+      title="Adjuntar archivo"
+    >
+      <img src="/assets/images/add-file.png" alt="Adjuntar Archivo" class="chat-input-icon-img add-button">
+    </button>
+
+    <!-- Boton Enviar -->
+    <button
+      type="button"
+      class="chat-input-icon chat-input-icon-send btn rounded-circle p-2"
+      (click)="sendMessage()"
+      [disabled]="isLoading || (!userMessage.trim() && attachedFileViews.length === 0)"
+      aria-label="Enviar mensaje"
+      title="Enviar mensaje"
+    >
+      <img src="/assets/images/send.png" alt="Enviar" class="chat-input-icon-img send-button">
+    </button>
+  </div>
 </div>

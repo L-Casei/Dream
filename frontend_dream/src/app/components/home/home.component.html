@@ -1,0 +1,79 @@
+@let isDarkMode = (isDarkMode$ | async) === true;
+
+<section class="home-page" [class.home-dark]="isDarkMode" [class.home-light]="!isDarkMode">
+  <header class="home-header">
+    <a class="home-brand" aria-label="DREAM AI">
+      <img src="/assets/images/dream.png" alt="Dream logo" class="home-logo">
+      <span>DREAM</span>
+    </a>
+
+    <div class="home-actions">
+      <div class="settings-wrap">
+        <button type="button" class="icon-action settings-button" (click)="toggleSettings()" aria-label="Ajustes"
+          title="Ajustes">
+          <img src="/assets/images/settings.png" alt="Ajustes" class="chat-input-icon-img">
+        </button>
+
+        @if (isSettingsOpen) {
+        <div class="settings-menu">
+          <button type="button" class="settings-row" (click)="toggleTheme()">
+            <span>Tema</span>
+            <strong>{{ isDarkMode ? 'Oscuro' : 'Claro' }}</strong>
+          </button>
+          <button type="button" class="settings-row" disabled>
+            <span>Idioma</span>
+            <strong>Proximamente</strong>
+          </button>
+          <button type="button" class="settings-row">
+            <span>Asistencia</span>
+            <strong>Contactar</strong>
+          </button>
+        </div>
+        }
+      </div>
+
+      <button type="button" class="header-button header-button-ghost" routerLink="/login">
+        Iniciar sesion
+      </button>
+      <button type="button" class="header-button header-button-ghost" routerLink="/register">
+        Crear cuenta
+      </button>
+    </div>
+  </header>
+
+  <main class="home-hero">
+    <div class="hero-copy">
+      <h1>DREAM AI</h1>
+    </div>
+
+    <form class="home-chat-bar" (ngSubmit)="startChat()">
+      <input type="text" name="initialMessage" [(ngModel)]="initialMessage" placeholder="Pregunta algo a DREAM..."
+        autocomplete="off" aria-label="Mensaje inicial">
+
+      <button type="submit" [disabled]="!initialMessage.trim()" aria-label="Enviar mensaje">
+        <img src="/assets/images/send.png" alt="Enviar" class="send-icon">
+      </button>
+    </form>
+  </main>
+
+  @if (showCookiePopup) {
+  <aside class="cookie-popup" aria-label="Aviso de cookies">
+    <div>
+      <h2>Cookies</h2>
+      <p>
+        Usamos cookies necesarias para que DREAM funcione y, mas adelante,
+        podremos usar cookies de terceros para mejorar la experiencia.
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <button type="button" class="cookie-secondary" (click)="acceptCookies('necessary')">
+        Solo necesarias
+      </button>
+      <button type="button" class="cookie-primary" (click)="acceptCookies('all')">
+        Aceptar
+      </button>
+    </div>
+  </aside>
+  }
+</section>
