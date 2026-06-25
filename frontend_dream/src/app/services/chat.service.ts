@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChatAttachment, ChatMessage } from '../models/chatMessage';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, finalize, forkJoin, map, of, tap } from 'rxjs';
 
 export interface ChatRequest {
   message: string;
@@ -11,12 +11,33 @@ export interface ChatResponse {
   answer: string;
 }
 
+export interface CurrentUser {
+  id: string;
+  name: string;
+  email?: string;
+  plan?: string;
+  avatarUrl?: string;
+}
+
+export interface ChatConversation {
+  id: string;
+  title: string;
+  preview?: string;
+  updatedAt: Date;
+  unreadCount?: number;
+}
+
+interface ChatConversationResponse extends Omit<ChatConversation, 'updatedAt'> {
+  updatedAt: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private readonly apiUrl = 'http://localhost:8080/api/chat';
+  private readonly apiBaseUrl = 'http://localhost:8080/api';
+  private readonly chatApiUrl = `${this.apiBaseUrl}/chat`;
   private readonly responseStyleInstructions = [
     'Instrucciones internas de presentacion para Dream:',
     '- Responde siempre en espanol claro, salvo que el usuario pida otro idioma.',
@@ -39,7 +60,39 @@ export class ChatService {
   private readonly botThinkingSubject = new BehaviorSubject<boolean>(false);
   isBotThinking$ = this.botThinkingSubject.asObservable();
 
+  private readonly currentUserSubject = new BehaviorSubject<CurrentUser | null>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
+
+  private readonly conversationsSubject = new BehaviorSubject<ChatConversation[]>([]);
+  conversations$ = this.conversationsSubject.asObservable();
+
+  private readonly selectedConversationIdSubject = new BehaviorSubject<string | null>(null);
+  selectedConversationId$ = this.selectedConversationIdSubject.asObservable();
+
+  private readonly sidebarLoadingSubject = new BehaviorSubject<boolean>(false);
+  isSidebarLoading$ = this.sidebarLoadingSubject.asObservable();
+
+  private readonly sidebarErrorSubject = new BehaviorSubject<string | null>(null);
+  sidebarError$ = this.sidebarErrorSubject.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  loadSidebarData(): void {
+    this.sidebarLoadingSubject.next(true);
+    this.sidebarErrorSubject.next(null);
+
+    forkJoin({
+      user: this.loadCurrentUser(),
+      conversations: this.loadConversations()
+    }).pipe(
+      finalize(() => this.sidebarLoadingSubject.next(false))
+    ).subscribe({
+      error: (error) => {
+        console.error('Error al cargar la barra lateral:', error);
+        this.sidebarErrorSubject.next('No se pudo cargar tu informacion.');
+      }
+    });
+  }
 
   getMessages(): ChatMessage[] {
     return this.messagesSubject.getValue();
@@ -47,6 +100,30 @@ export class ChatService {
 
   clearMessages(): void {
     this.messagesSubject.next([]);
+  }
+
+  startNewConversation(): void {
+    this.selectedConversationIdSubject.next(null);
+    this.clearMessages();
+  }
+
+  selectConversation(conversationId: string): void {
+    this.selectedConversationIdSubject.next(conversationId);
+    this.setBotThinking(true);
+
+    this.http.get<ChatMessage[]>(`${this.chatApiUrl}/conversations/${conversationId}/messages`).pipe(
+      map((messages) => messages.map((message) => ({
+        ...message,
+        createdAt: new Date(message.createdAt)
+      }))),
+      finalize(() => this.setBotThinking(false))
+    ).subscribe({
+      next: (messages) => this.messagesSubject.next(messages),
+      error: (error) => {
+        console.error('Error al cargar la conversacion:', error);
+        this.addBotMessage('No he podido cargar esta conversacion. Intentalo de nuevo en unos segundos.');
+      }
+    });
   }
 
   createUserMessage(text: string, attachments: ChatAttachment[] = []): ChatMessage {
@@ -112,13 +189,39 @@ export class ChatService {
         body.append('files', file, file.name);
       });
 
-      return this.http.post<ChatResponse>(`${this.apiUrl}/with-files`, body);
+      return this.http.post<ChatResponse>(`${this.chatApiUrl}/with-files`, body);
     }
 
     const body: ChatRequest = {
       message: formattedMessage
     };
-    return this.http.post<ChatResponse>(this.apiUrl, body);
+    return this.http.post<ChatResponse>(this.chatApiUrl, body);
+  }
+
+  private loadCurrentUser(): Observable<CurrentUser | null> {
+    return this.http.get<CurrentUser>(`${this.apiBaseUrl}/users/me`).pipe(
+      tap((user) => this.currentUserSubject.next(user)),
+      catchError((error) => {
+        console.warn('Backend de usuario no disponible todavia:', error);
+        this.currentUserSubject.next(null);
+        return of(null);
+      })
+    );
+  }
+
+  private loadConversations(): Observable<ChatConversation[]> {
+    return this.http.get<ChatConversationResponse[]>(`${this.chatApiUrl}/conversations`).pipe(
+      map((conversations) => conversations.map((conversation) => ({
+        ...conversation,
+        updatedAt: new Date(conversation.updatedAt)
+      }))),
+      tap((conversations) => this.conversationsSubject.next(conversations)),
+      catchError((error) => {
+        console.warn('Backend de conversaciones no disponible todavia:', error);
+        this.conversationsSubject.next([]);
+        return of([]);
+      })
+    );
   }
 
   private addMessage(message: ChatMessage): void {

@@ -1,43 +1,84 @@
 <div class="aside-panel d-flex flex-column h-100" [class.aside-panel-collapsed]="collapsed">
+  @let currentUser = currentUser$ | async;
+  @let conversations = (conversations$ | async) ?? [];
+  @let selectedConversationId = selectedConversationId$ | async;
+  @let isLoading = (isSidebarLoading$ | async) === true;
 
-  <!-- PERFIL (arriba) -->
-  <div class="aside-profile p-3 border-bottom">
-    <div class="d-flex align-items-center">
-      <div class="aside-avatar bg-light rounded-circle p-2">
-        &#128100;
-      </div>
-      <div class="aside-profile-text ms-2">
-        <p class="mb-0"><strong>Guti</strong></p>
-        <small class="text-muted">Premium</small>
-      </div>
+  <section class="aside-profile" aria-label="Perfil del usuario">
+    <div class="aside-avatar" aria-hidden="true">
+      @if (currentUser?.avatarUrl) {
+        <img [src]="currentUser?.avatarUrl" [alt]="currentUser?.name ?? 'Usuario'" />
+      } @else {
+        <span>{{ (currentUser?.name?.charAt(0) ?? 'D') | uppercase }}</span>
+      }
     </div>
+
+    <div class="aside-profile-text">
+      <p class="aside-user-name mb-0">{{ currentUser?.name ?? 'Usuario invitado' }}</p>
+      <small>{{ currentUser?.plan ?? 'Sesion local' }}</small>
+    </div>
+  </section>
+
+  <div class="aside-actions">
+    <button type="button" class="aside-new-chat" title="Nueva conversacion" (click)="startNewConversation()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M8 2a.75.75 0 0 1 .75.75v4.5h4.5a.75.75 0 0 1 0 1.5h-4.5v4.5a.75.75 0 0 1-1.5 0v-4.5h-4.5a.75.75 0 0 1 0-1.5h4.5v-4.5A.75.75 0 0 1 8 2"/>
+      </svg>
+      <span class="aside-action-label">Nueva conversacion</span>
+    </button>
   </div>
 
-  <!-- CONVERSACIONES (scroll) -->
-  <div class="aside-conversations flex-grow-1 overflow-auto p-2">
-    <button class="btn aside-chat-button w-100 text-start mb-2" title="Angular Coding Doubts">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
-        viewBox="0 0 16 16">
-        <path
-          d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-      </svg>
-      <span class="aside-chat-label">{{ "Angular Coding Doubts" | slice:0:25 }}</span>
-    </button>
-    <button class="btn aside-chat-button w-100 text-start mb-2" title="How to Create new House in Minecraft">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
-        viewBox="0 0 16 16">
-        <path
-          d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-      </svg>
-      <span class="aside-chat-label">{{ "How to Create new House in Minecraft" | slice:0:25 }}</span>
-    </button>
-    <button class="btn aside-chat-button w-100 text-start mb-2" title="Gargantua is a real Black Hole?">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive"
-        viewBox="0 0 16 16">
-        <path
-          d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-      </svg>
-      <span class="aside-chat-label">{{ "Gargantua is a real Black Hole?" | slice:0:25 }}</span>
-    </button>
+  <div class="aside-section-label">
+    <span>Conversaciones</span>
+  </div>
+
+  <div class="aside-conversations flex-grow-1 overflow-auto">
+    @if (isLoading) {
+      @for (item of [1, 2, 3, 4]; track item) {
+        <div class="aside-chat-skeleton" aria-hidden="true"></div>
+      }
+    } @else if (conversations.length > 0) {
+      @for (conversation of conversations; track trackConversation($index, conversation)) {
+        <button
+          type="button"
+          class="aside-chat-button"
+          [class.aside-chat-button-active]="conversation.id === selectedConversationId"
+          [title]="conversation.title"
+          (click)="selectConversation(conversation)"
+        >
+          <span class="aside-chat-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M2 2.75A1.75 1.75 0 0 1 3.75 1h8.5A1.75 1.75 0 0 1 14 2.75v7.5A1.75 1.75 0 0 1 12.25 12H5.06l-2.47 2.47A.75.75 0 0 1 1.3 13.94V2.75zm1.75-.25a.25.25 0 0 0-.25.25v9.38l1.72-1.72a.75.75 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-7.2a.25.25 0 0 0-.25-.25z"/>
+            </svg>
+          </span>
+
+          <span class="aside-chat-content">
+            <span class="aside-chat-title">{{ conversation.title | slice:0:42 }}</span>
+            @if (conversation.preview) {
+              <span class="aside-chat-preview">{{ conversation.preview | slice:0:54 }}</span>
+            }
+          </span>
+
+          <span class="aside-chat-meta">
+            <time [attr.datetime]="conversation.updatedAt.toISOString()">
+              {{ conversation.updatedAt | date:'d MMM' }}
+            </time>
+            @if (conversation.unreadCount) {
+              <span class="aside-unread">{{ conversation.unreadCount }}</span>
+            }
+          </span>
+        </button>
+      }
+    } @else {
+      <div class="aside-empty-state">
+        <div class="aside-empty-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 1.5a6.5 6.5 0 0 0-5.24 10.35l-.64 2.18a.75.75 0 0 0 .92.92l2.18-.64A6.5 6.5 0 1 0 8 1.5m0 1.5a5 5 0 1 1-2.34 9.42.75.75 0 0 0-.57-.06l-1.14.33.33-1.14a.75.75 0 0 0-.06-.57A5 5 0 0 1 8 3"/>
+          </svg>
+        </div>
+        <p class="mb-1">Sin conversaciones guardadas</p>
+        <small>Cuando el backend responda, apareceran aqui las conversaciones del usuario.</small>
+      </div>
+    }
   </div>
 </div>
